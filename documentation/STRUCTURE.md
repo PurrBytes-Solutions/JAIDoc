@@ -27,7 +27,8 @@ JAIDoc/
 │   ├── MCP.md                       # MCP server setup
 │   ├── SECURITY.md                  # Actuator restrictions, logging paths
 │   ├── STRUCTURE.md                 # This file
-│   └── TEST.md                      # Test architecture, class hierarchy, tags
+│   ├── TEST.md                      # Test architecture, class hierarchy, tags
+│   └── DEPENDENCIES.md              # Dependency version management methodology and status
 ├── features/                        # Feature workspaces — planning context (see features/FEATURES.md)
 │   ├── FEATURES.md                  # Feature index, status legend, conventions
 │   ├── example/                     # Template feature workspace
@@ -192,7 +193,7 @@ The doclet jar is used by `javadoc -docletpath` to generate JSON documentation v
 | Compiler Plugin | Maven Compiler Plugin (Lombok annotation processor)   |
 | Boot Plugin     | Spring Boot Maven Plugin (AOT processing, build-info) |
 | Assembly Plugin | Maven Assembly Plugin (doclet JAR packaging)          |
-| Wrapper         | Maven Wrapper 3.9.16 (`mvnw` / `mvnw.cmd`)           |
+| Wrapper         | Maven Wrapper 3.9.16 (`mvnw` / `mvnw.cmd`)            |
 
 ### Web & API
 
@@ -246,6 +247,10 @@ The doclet jar is used by `javadoc -docletpath` to generate JSON documentation v
 | Actuator  | Spring Boot Starter Actuator (health, env, configprops, loggers) |
 | Logging   | Logback (via spring-boot-starter-logging)                        |
 | AOP       | Spring Boot Starter AspectJ                                      |
+
+### Dependency Management
+
+Version management methodology and update commands in [DEPENDENCIES.md](DEPENDENCIES.md).
 
 ### Maintenance
 

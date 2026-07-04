@@ -237,6 +237,7 @@ the privacy.
 - **AI models** — [`documentation/AI-MODELS.md`](documentation/AI-MODELS.md)
 - **MCP setup** — [`documentation/MCP.md`](documentation/MCP.md)
 - **Project structure** — [`documentation/STRUCTURE.md`](documentation/STRUCTURE.md)
+- **Dependency versions** — [`documentation/DEPENDENCIES.md`](documentation/DEPENDENCIES.md)
 - **Jackson configuration** — [`documentation/JACKSON.md`](documentation/JACKSON.md)
 - **ONNX embedding model** — [`onnx/TRANSFORMER.md`](onnx/TRANSFORMER.md)
 - **Development log** — [`blackbook/BLACKBOOK.md`](blackbook/BLACKBOOK.md)
