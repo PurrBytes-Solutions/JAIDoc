@@ -38,7 +38,8 @@ JAIDoc/
 │   ├── tokenizer.json               # SentencePiece tokenizer vocabulary
 │   └── TRANSFORMER.md               # Model selection and URI scheme documentation
 ├── scripts/                         # Utility scripts
-│   ├── generate-jdk-versions-doc.ps1       # Generates JDK version documentation
+│   ├── generate-jdk-versions-doc.ps1       # Generates JDK version documentation (PowerShell)
+│   ├── generate-jdk-versions-doc.sh        # Generates JDK version documentation (bash)
 │   ├── download-onnx-transformer-model.sh  # Downloads ONNX model (Unix)
 │   └── download-onnx-transformer-model.ps1 # Downloads ONNX model (Windows)
 ├── blackbook/                       # Black Book — dev log (rules + dated notes)
