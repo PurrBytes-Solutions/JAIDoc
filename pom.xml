@@ -17,7 +17,7 @@
     </description>
     <properties>
         <!-- https://central.sonatype.com/artifact/com.microsoft.onnxruntime/onnxruntime-->
-        <onnxruntime.version>1.26.0</onnxruntime.version>
+        <onnxruntime.version>1.27.0</onnxruntime.version>
         <!-- https://central.sonatype.com/artifact/org.springdoc/springdoc-openapi-starter-webflux-ui/versions-->
         <openapi.version>3.0.3</openapi.version>
         <!-- https://central.sonatype.com/artifact/org.apache.commons/commons-compress/versions-->
