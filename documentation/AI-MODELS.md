@@ -20,7 +20,7 @@ complexity.
 
 | Component | Technology       | Version | Date       |
 |-----------|------------------|---------|------------|
-| Server    | llama.cpp Server | b9860   | 2026-07-02 |
+| Server    | llama.cpp Server | b9867   | 2026-07-03 |
 
 ## Models
 
