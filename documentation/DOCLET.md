@@ -106,7 +106,7 @@ output-json/
 
 ```json
 {
-  "generator": "json-doclet 1.0.0",
+  "generator": "json-doclet <version>",
   "version": "25.0.3",
   "generatedAt": "2026-06-10T04:19:29Z",
   "javaRuntime": "21.0.11",

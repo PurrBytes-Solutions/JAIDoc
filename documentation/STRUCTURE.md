@@ -180,10 +180,10 @@ The doclet jar is used by `javadoc -docletpath` to generate JSON documentation v
 
 ### Runtime
 
-| Component             | Technology        |
-|-----------------------|-------------------|
-| JVM                   | Java 25           |
-| Application Framework | Spring Boot 4.1.0 |
+| Component             | Technology  |
+|-----------------------|-------------|
+| JVM                   | Java 25     |
+| Application Framework | Spring Boot |
 
 ### Build
 
@@ -193,16 +193,16 @@ The doclet jar is used by `javadoc -docletpath` to generate JSON documentation v
 | Compiler Plugin | Maven Compiler Plugin (Lombok annotation processor)   |
 | Boot Plugin     | Spring Boot Maven Plugin (AOT processing, build-info) |
 | Assembly Plugin | Maven Assembly Plugin (doclet JAR packaging)          |
-| Wrapper         | Maven Wrapper 3.9.16 (`mvnw` / `mvnw.cmd`)            |
+| Wrapper         | Maven Wrapper 3.3.4 (`mvnw` / `mvnw.cmd`)             |
 
 ### Web & API
 
-| Component       | Technology                                 |
-|-----------------|--------------------------------------------|
-| Web Runtime     | Spring WebFlux (reactive)                  |
-| Validation      | Spring Boot Starter Validation             |
-| HTTP Client     | Spring Boot Starter RestClient             |
-| OpenAPI/Swagger | springdoc-openapi-starter-webflux-ui 3.0.3 |
+| Component       | Technology                           |
+|-----------------|--------------------------------------|
+| Web Runtime     | Spring WebFlux (reactive)            |
+| Validation      | Spring Boot Starter Validation       |
+| HTTP Client     | Spring Boot Starter RestClient       |
+| OpenAPI/Swagger | springdoc-openapi-starter-webflux-ui |
 
 ### Data & Persistence
 
@@ -210,19 +210,19 @@ The doclet jar is used by `javadoc -docletpath` to generate JSON documentation v
 |-----------|-------------------------------------------------------------|
 | Database  | SQLite JDBC                                                 |
 | ORM       | Spring Boot Starter Data JPA + Hibernate community dialects |
-| Search    | Hibernate Search 8.4.0.Final (mapper-orm + Lucene backend)  |
-| Vector    | Hibernate Search kNN (`@VectorField(384, COSINE)`)          |
+| Search    | Hibernate Search (mapper-orm + Lucene backend)              |
+| Vector    | Hibernate Search kNN (`@VectorField`, cosine similarity)    |
 
 ### AI & MCP
 
-| Component            | Technology                                                 |
-|----------------------|------------------------------------------------------------|
-| MCP Server           | Spring AI MCP Server 2.0.0 (streamable protocol)           |
-| MCP Tool Callbacks   | MethodToolCallbackProvider (auto-discovered @Tool objects) |
-| MCP WebFlux Adapter  | spring-ai-starter-mcp-server-webflux                       |
-| Spring AI BOM        | 2.0.0                                                      |
-| Spring Cloud         | 2025.1.2                                                   |
-| Hibernate Search BOM | 8.4.0.Final                                                |
+| Component            | Technology                                         |
+|----------------------|----------------------------------------------------|
+| MCP Server           | Spring AI MCP Server (streamable protocol)         |
+| MCP Tool Callbacks   | MethodToolCallbackProvider (auto-discovered @Tool) |
+| MCP WebFlux Adapter  | spring-ai-starter-mcp-server-webflux               |
+| Spring AI BOM        | (managed by Spring AI BOM)                         |
+| Spring Cloud         | (managed by Spring Cloud Dependencies)             |
+| Hibernate Search BOM | (managed by Hibernate Search BOM)                  |
 
 ### JSON & Serialization
 
@@ -234,10 +234,10 @@ The doclet jar is used by `javadoc -docletpath` to generate JSON documentation v
 
 ### Utilities
 
-| Component       | Technology                     |
-|-----------------|--------------------------------|
-| Compression     | Apache Commons Compress 1.28.0 |
-| Code Generation | Lombok                         |
+| Component       | Technology              |
+|-----------------|-------------------------|
+| Compression     | Apache Commons Compress |
+| Code Generation | Lombok                  |
 
 ### Observability & Infrastructure
 
@@ -247,6 +247,13 @@ The doclet jar is used by `javadoc -docletpath` to generate JSON documentation v
 | Actuator  | Spring Boot Starter Actuator (health, env, configprops, loggers) |
 | Logging   | Logback (via spring-boot-starter-logging)                        |
 | AOP       | Spring Boot Starter AspectJ                                      |
+
+### Architecture Note
+
+The project has **no HTTP API endpoints** — no `@RestController`, no REST controllers. All external
+interaction is via **MCP tools** exposed through the Spring AI MCP Server (streamable protocol).
+The two tool classes (`JavaDocMCP`, `SpringBootMCP`) are auto-discovered by `MethodToolCallbackProvider`
+and registered with the MCP server at startup.
 
 ### Dependency Management
 

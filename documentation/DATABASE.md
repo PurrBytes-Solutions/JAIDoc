@@ -25,68 +25,70 @@ JdkVersion (jdk_version)            1 ──< JdkDocElement (jdk_doc_element)   
 
 ### Main columns of `jdk_doc_chunk`
 
-| Column          | Type       | Description                                       |
-|-----------------|------------|---------------------------------------------------|
-| `id`            | TEXT       | UUID primary key                                  |
-| `jdk_version_id`| TEXT       | FK to `jdk_version` (required)                    |
-| `doc_element_id`| TEXT       | FK to `jdk_doc_element` (optional)                |
-| `version`       | TEXT       | JDK version (denormalized, mandatory kNN filter)  |
-| `chunk_id`      | TEXT       | Unique chunk identifier                           |
-| `text`          | TEXT (LOB) | Chunk text                                        |
-| `embedding`     | BLOB       | Vector embedding (384 floats, serialized as BLOB) |
-| `kind`          | TEXT       | Element type (MODULE, PACKAGE, TYPE, etc.)        |
-| `qualifiedType` | TEXT       | Full type name                                    |
-| `packageName`   | TEXT       | Package it belongs to                             |
-| `moduleName`    | TEXT       | Module it belongs to                              |
-| `member`        | TEXT       | Member name (if it's a type member)               |
-| `signature`     | TEXT       | Member signature                                  |
-| `since`         | TEXT       | Since annotation                                  |
-| `deprecated`    | BOOLEAN    | Whether deprecated                                |
-| `sourceFile`    | TEXT       | Source file name                                  |
-| `sourceLine`    | INTEGER    | Source line number                                |
-| `part`          | INTEGER    | Chunk part index within parent element            |
-| `parts`         | INTEGER    | Total parts for parent element                    |
-| `parentChunkId` | TEXT       | Parent chunk ID (if this is a sub-chunk)          |
+| Column           | Type       | Description                                       |
+|------------------|------------|---------------------------------------------------|
+| `id`             | TEXT       | UUID primary key                                  |
+| `jdk_version_id` | TEXT       | FK to `jdk_version` (required)                    |
+| `doc_element_id` | TEXT       | FK to `jdk_doc_element` (optional)                |
+| `version`        | TEXT       | JDK version (denormalized, mandatory kNN filter)  |
+| `chunk_id`       | TEXT       | Unique chunk identifier                           |
+| `text`           | TEXT (LOB) | Chunk text                                        |
+| `embedding`      | BLOB       | Vector embedding (384 floats, serialized as BLOB) |
+| `kind`           | TEXT       | Element type (MODULE, PACKAGE, TYPE, etc.)        |
+| `qualifiedType`  | TEXT       | Full type name                                    |
+| `packageName`    | TEXT       | Package it belongs to                             |
+| `moduleName`     | TEXT       | Module it belongs to                              |
+| `member`         | TEXT       | Member name (if it's a type member)               |
+| `signature`      | TEXT       | Member signature                                  |
+| `since`          | TEXT       | Since annotation                                  |
+| `deprecated`     | BOOLEAN    | Whether deprecated                                |
+| `sourceFile`     | TEXT       | Source file name                                  |
+| `sourceLine`     | INTEGER    | Source line number                                |
+| `part`           | INTEGER    | Chunk part index within parent element            |
+| `parts`          | INTEGER    | Total parts for parent element                    |
+| `parentChunkId`  | TEXT       | Parent chunk ID (if this is a sub-chunk)          |
 
 Unique constraint: `(jdk_version_id, chunk_id)`.
 
 ### Main columns of `jdk_doc_element`
 
-| Column          | Type    | Description                                      |
-|-----------------|---------|--------------------------------------------------|
-| `id`            | TEXT    | UUID primary key                                 |
-| `jdk_version_id`| TEXT    | FK to `jdk_version` (required)                   |
-| `kind`          | TEXT    | Element type enum (`MODULE`, `PACKAGE`, `TYPE`, etc.) |
-| `qualified_id`  | TEXT    | Qualified identifier (e.g. "java.io.BufferedInputStream") |
-| `simple_name`   | TEXT    | Simple name                                      |
-| `packageName`   | TEXT    | Package it belongs to                            |
-| `moduleName`    | TEXT    | Module it belongs to                             |
-| `raw_json`      | TEXT (LOB) | Raw structural JSON of the element            |
+| Column           | Type       | Description                                               |
+|------------------|------------|-----------------------------------------------------------|
+| `id`             | TEXT       | UUID primary key                                          |
+| `jdk_version_id` | TEXT       | FK to `jdk_version` (required)                            |
+| `kind`           | TEXT       | Element type enum (`MODULE`, `PACKAGE`, `TYPE`, etc.)     |
+| `qualified_id`   | TEXT       | Qualified identifier (e.g. "java.io.BufferedInputStream") |
+| `simple_name`    | TEXT       | Simple name                                               |
+| `packageName`    | TEXT       | Package it belongs to                                     |
+| `moduleName`     | TEXT       | Module it belongs to                                      |
+| `raw_json`       | TEXT (LOB) | Raw structural JSON of the element                        |
 
 ### Main columns of `jdk_version`
 
-| Column         | Type       | Description                                       |
-|----------------|------------|---------------------------------------------------|
-| `id`           | TEXT       | UUID primary key                                  |
-| `version`      | TEXT       | JDK version (e.g. "25.0.3"), unique               |
-| `major`        | INTEGER    | Major version number                              |
-| `minor`        | INTEGER    | Minor version number                              |
-| `security`     | INTEGER    | Security build number                             |
-| `javaRuntime`  | TEXT       | Runtime from index.json                           |
-| `generator`    | TEXT       | Generator from index.json                         |
-| `generatedAt`  | TIMESTAMP  | Generation timestamp from index.json              |
-| `typeCount`    | INTEGER    | Number of documented types                        |
-| `packageCount` | INTEGER    | Number of documented packages                     |
-| `moduleCount`  | INTEGER    | Number of documented modules                      |
-| `chunkCount`   | INTEGER    | Number of chunks                                  |
-| `ingestedAt`   | TIMESTAMP  | When ingestion completed                          |
-| `status`       | TEXT       | Ingestion status (`INGESTING`, `READY`, `FAILED`) |
+| Column         | Type      | Description                                       |
+|----------------|-----------|---------------------------------------------------|
+| `id`           | TEXT      | UUID primary key                                  |
+| `version`      | TEXT      | JDK version (e.g. "25.0.3"), unique               |
+| `major`        | INTEGER   | Major version number                              |
+| `minor`        | INTEGER   | Minor version number                              |
+| `security`     | INTEGER   | Security build number                             |
+| `javaRuntime`  | TEXT      | Runtime from index.json                           |
+| `generator`    | TEXT      | Generator from index.json                         |
+| `generatedAt`  | TIMESTAMP | Generation timestamp from index.json              |
+| `typeCount`    | INTEGER   | Number of documented types                        |
+| `packageCount` | INTEGER   | Number of documented packages                     |
+| `moduleCount`  | INTEGER   | Number of documented modules                      |
+| `chunkCount`   | INTEGER   | Number of chunks                                  |
+| `ingestedAt`   | TIMESTAMP | When ingestion completed                          |
+| `status`       | TEXT      | Ingestion status (`INGESTING`, `READY`, `FAILED`) |
 
 ### Relationships
 
-- `JdkVersion` has `@OneToMany` relationships to both `JdkDocElement` and `JdkDocChunk` (with `CascadeType.ALL`, orphan removal)
+- `JdkVersion` has `@OneToMany` relationships to both `JdkDocElement` and `JdkDocChunk` (with `CascadeType.ALL`, orphan
+  removal)
 - `JdkDocElement` has a `@ManyToOne` relationship to `JdkVersion` (required, LAZY)
-- `JdkDocChunk` has a `@ManyToOne` relationship to `JdkVersion` (required, LAZY) and optionally to `JdkDocElement` (LAZY)
+- `JdkDocChunk` has a `@ManyToOne` relationship to `JdkVersion` (required, LAZY) and optionally to `JdkDocElement` (
+  LAZY)
 - All entities use `@GeneratedValue(strategy = GenerationType.UUID)` for UUID primary keys
 
 ## Hibernate Search Mapping
@@ -166,6 +168,6 @@ The kNN is filtered by `version` to guarantee isolation between versions.
 ## Dependencies
 
 - Spring Data JPA
-- Hibernate Search 8.4 (mapper-orm + backend-lucene)
+- Hibernate Search (mapper-orm + backend-lucene)
 - SQLite JDBC
 - Hibernate community dialects
