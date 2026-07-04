@@ -38,8 +38,11 @@
         <p class="tab">🏗️ Architecture</p>
         <h2>Atomic Class-by-Class Development</h2>
         <ul>
-            <li>Spect Driven Development (SDD) is popular, but using it with AI produces terrible results: hallucinations, unnecessary code, loss of control</li>
-            <li>The proven approach: work on <strong>specific, encapsulated functionality</strong> — one class at a time</li>
+            <li>Spect Driven Development (SDD) is popular, but using it with AI produces terrible results:
+                hallucinations, unnecessary code, loss of control
+            </li>
+            <li>The proven approach: work on <strong>specific, encapsulated functionality</strong> — one class at a time
+            </li>
             <li>Design every class individually, where you maintain full control over the output</li>
             <li>The resulting code is significantly better across every stage:
                 <ul>
@@ -49,7 +52,9 @@
                     <li><strong>Integration tests</strong> — both levels (component + end-to-end)</li>
                 </ul>
             </li>
-            <li>Key insight: explore ideas first to deeply understand the functionality, <em>then</em> define class by class</li>
+            <li>Key insight: explore ideas first to deeply understand the functionality, <em>then</em> define class by
+                class
+            </li>
             <li>This is like SDD but far more atomic — dramatically better results</li>
         </ul>
         <pre class="mermaid">graph LR
@@ -70,7 +75,8 @@
             <li><strong>Document</strong> — add Javadoc and inline docs while the design is fresh</li>
             <li><strong>Unit test</strong> — cover every public method of the class</li>
             <li><strong>Integration test</strong> — verify it works within the system at both levels</li>
-            <li><strong>Verify</strong> — if anything fails, loop back to design; if all passes, move to the next class</li>
+            <li><strong>Verify</strong> — if anything fails, loop back to design; if all passes, move to the next class
+            </li>
         </ol>
         <p>The result: tighter control, less AI hallucination, code that actually matches the design intent.</p>
     </section>
