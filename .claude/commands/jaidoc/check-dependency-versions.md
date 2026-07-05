@@ -64,11 +64,11 @@ to fetch the latest version from Sonatype Central. Reuse the command verbatim, s
 
 Produce the comparison table using the **exact format** from `documentation/DEPENDENCIES.md`:
 
-| Dependencia    | Versión actual (pom.xml) | Última en Sonatype Central | Estado                                  |
-|----------------|--------------------------|----------------------------|-----------------------------------------|
-| **artifactId** | X.Y.Z                    | A.B.C                      | ✅ Al día / 📈 Actualizable / ⚠️ Revisar |
+| Dependency     | Current (pom.xml) | Latest on Sonatype Central | Status                               |
+|----------------|-------------------|----------------------------|--------------------------------------|
+| **artifactId** | X.Y.Z             | A.B.C                      | ✅ Up to date / 📈 Update / ⚠️ Review |
 
-Include one row per item collected in Step 1. After the table, add a **"Versiones sin property"** section listing any
+Include one row per item collected in Step 1. After the table, add a **"Versions without property"** section listing any
 literal `<version>` found in Step 2, each with the suggested property name and the before/after XML snippet. If none
 were found, state that explicitly.
 
@@ -76,5 +76,5 @@ were found, state that explicitly.
 
 - Work exclusively with what is declared in `pom.xml` — never assume transitive or undeclared dependencies.
 - Do not edit `pom.xml`; this command is read-only/reporting.
-- If a Sonatype Central query fails or returns no result, report it as ⚠️ Revisar with a short note instead of
+- If a Sonatype Central query fails or returns no result, report it as ⚠️ Review with a short note instead of
   guessing a version.

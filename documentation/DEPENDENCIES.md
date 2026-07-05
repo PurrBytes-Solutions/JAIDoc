@@ -62,9 +62,9 @@ done
 For each dependency, run the curl command and compare against the value in the `<properties>` section of `pom.xml`.
 Format as:
 
-| Dependencia    | Versión actual (pom.xml) | Última en Sonatype Central | Estado                                  |
-|----------------|--------------------------|----------------------------|-----------------------------------------|
-| **artifactId** | X.Y.Z                    | A.B.C                      | ✅ Al día / 📈 Actualizable / ⚠️ Revisar |
+| Dependency     | Current (pom.xml) | Latest on Sonatype Central | Status                               |
+|----------------|-------------------|----------------------------|--------------------------------------|
+| **artifactId** | X.Y.Z             | A.B.C                      | ✅ Up to date / 📈 Update / ⚠️ Review |
 
 ### What to Check
 
