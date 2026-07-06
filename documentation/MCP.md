@@ -33,10 +33,10 @@ See `request/mcp-tools.http` for a complete working example.
 
 ### MCP Domains
 
-| Domain       | Class           | Description                    | Status |
-|--------------|-----------------|--------------------------------|--------|
-| `java`       | `JavaDocMCP`    | JDK Javadoc search and listing | Active |
-| `springboot` | `SpringBootMCP` | Spring Boot documentation      | Active |
+| Domain       | Class           | Description                    | Status      |
+|--------------|-----------------|--------------------------------|-------------|
+| `java`       | `JavaDocMCP`    | JDK Javadoc search and listing | Active      |
+| `springboot` | `SpringBootMCP` | Spring Boot documentation      | Stub (TODO) |
 
 ### Adding a New Domain
 
@@ -55,9 +55,10 @@ Example structure:
 @RequiredArgsConstructor
 public class SpringBootMCP {
 
-    @Tool(description = "Search Spring Boot documentation")
+    @Tool(description = "Search Spring Boot documentation (stub)")
     public String searchSpringBootDocs(String query) {
-        // implementation
+        // TODO: Implement actual search logic
+        return "placeholder response";
     }
 }
 ```
@@ -68,13 +69,22 @@ public class SpringBootMCP {
 |----------------------------|------------------------------------------------------------|------------------------------------------------------------------------------------------------------------|
 | `listVersions`             | List JDK versions whose documentation has been generated   | *none*                                                                                                     |
 | `searchJavadoc`            | Semantic search of the JDK Javadoc within a single version | `version` (string) — JDK version, `query` (string) — natural language query, `topK` (number) — max results |
-| `startDocGeneration`       | Start an async JDK documentation generation pipeline       | `jdkVersion` (string) — target JDK version, `jdkDistribution` (string) — Adoptium distribution name        |
+| `startDocGeneration`       | Start an async JDK documentation generation pipeline       | `version` (string) — target JDK version (e.g. "25.0.3")                                                    |
 | `getDocGenerationProgress` | Poll the status of a doc generation task                   | `taskId` (string) — async task ID from `startDocGeneration`                                                |
-| `startIngest`              | Start an async JDK documentation ingestion pipeline        | `jdkVersion` (string) — target JDK version, `jdkDistribution` (string) — Adoptium distribution name        |
+| `startIngest`              | Start an async JDK documentation ingestion pipeline        | `version` (string) — target JDK version (e.g. "25.0.3"); ZIP auto-resolved via `getVersionZip()`           |
 | `getIngestProgress`        | Poll the status of an ingest task                          | `taskId` (string) — async task ID from `startIngest`                                                       |
 
-**Note**: `startDocGeneration`, `getDocGenerationProgress`, `startIngest`, and `getIngestProgress` return `TaskInfo`
-objects containing `taskId`, `status` (`PENDING` / `RUNNING` / `COMPLETED` / `FAILED`), `progress`, and `message`.
+**Note**: `startDocGeneration` and `startIngest` return a `String` task ID. `getDocGenerationProgress` and
+`getIngestProgress` return `TaskInfo` objects containing `taskId`, `status` (`PENDING` / `RUNNING` / `COMPLETED` /
+`FAILED`), `progress`, and `message`.
+
+#### Spring Boot Tools
+
+| Tool                   | Description                             | Parameters                      |
+|------------------------|-----------------------------------------|---------------------------------|
+| `searchSpringBootDocs` | Search Spring Boot documentation (stub) | `query` (string) — search query |
+
+**Note**: `SpringBootMCP` is currently a stub — `searchSpringBootDocs` returns a placeholder response.
 
 ## JetBrains MCP Server
 
@@ -85,15 +95,16 @@ The project ships with a pre-configured `.mcp.json` for direct streamable-HTTP c
   "mcpServers": {
     "JetBrains": {
       "type": "streamable-http",
-      "url": "http://127.0.0.1:64960/stream",
+      "url": "http://127.0.0.1:<port>/stream",
       "headers": {}
     }
   }
 }
 ```
 
-This bypasses the stdio-to-HTTP adapter and connects directly to the JetBrains MCP Server plugin running on port
-`64960`.
+This bypasses the stdio-to-HTTP adapter and connects directly to the JetBrains MCP Server plugin. The port is
+**dynamic** — IntelliJ assigns it at startup. Check the IntelliJ terminal or logs for the actual port, then replace
+`<port>` in the configuration above.
 
 ### JetBrains Tools
 

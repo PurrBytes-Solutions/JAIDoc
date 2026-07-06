@@ -20,7 +20,7 @@ complexity.
 
 | Component | Technology       | Version | Date       |
 |-----------|------------------|---------|------------|
-| Server    | llama.cpp Server | b9786   | 2026-06-25 |
+| Server    | llama.cpp Server | b9878   | 2026-07-05 |
 
 ## Models
 
@@ -53,25 +53,25 @@ complexity.
 
 | Model                                         | Parallel-Slots | Preferred agent    | Max (T/S) | Task             |
 |-----------------------------------------------|:--------------:|:-------------------|----------:|:-----------------|
-| LFM2.5-8B-A1B                                 |       1        | Junie              |           | Simple Code      |
-| Mellum2-12B-A2.5B                             |       1        | AI Assistant       |           | Single task code |
+| LFM2.5-8B-A1B                                 |       1        | Junie              |         — | Simple Code      |
+| Mellum2-12B-A2.5B                             |       1        | AI Assistant       |         — | Single task code |
 | Nex-N2-mini                                   |       1        | Junie, Claude Code |       105 | Very Hard Code   |
 | NVIDIA-Nemotron-3-Nano-Omni-30B-A3B-Reasoning |       1        | Junie              |       130 | General          |
 | NVIDIA-Nemotron-Cascade-2-30B-A3B             |       1        | Junie              |       160 | Single task code |
 | Qwen3.6-27B                                   |       1        | Junie              |        50 | Very Hard Code   |
 | Qwen3.6-27B-MTP                               |       1        | Junie              |        50 | Very Hard Code   |
 | Qwen3.6-35B-A3B                               |       1        | Junie              |       100 | Hard Code        |
-| Qwopus3.5-9B                                  |       1        | Claude Code        |           | Code             |
-| Qwopus3.5-9B-Coder                            |       1        | Claude Code        |           | Hard Code        |
+| Qwopus3.5-9B                                  |       1        | Claude Code        |         — | Code             |
+| Qwopus3.5-9B-Coder                            |       1        | Claude Code        |         — | Hard Code        |
 | Qwopus3.6-27B-Coder                           |       1        | Claude Code        |        40 | Very Hard Code   |
 | Qwopus3.6-27B-Coder-MTP                       |       1        | Claude Code        |        40 | Very Hard Code   |
 | Qwopus3.6-27B-v2                              |       1        | Claude Code        |        50 | Very Hard Code   |
 | Qwopus3.6-27B-v2-MTP                          |       1        | Claude Code        |        50 | Very Hard Code   |
 | Qwopus3.6-35B-A3B-v1                          |       1        | Claude Code        |       117 | Hard Code        |
 | Qwopus3.6-35B-A3B-v1-agents                   |       2        | Claude Code        |        60 | Hard Code        |
-| gemma-4-12B-it                                |       1        | Junie,Claude Code  |           | Code             |
-| gemma-4-26B-A4B-it                            |       1        | Junie,Claude Code  |           | Hard Code        |
-| gemma-4-31B-it                                |       1        | Junie,Claude Code  |           | Very Hard Code   |
+| gemma-4-12B-it                                |       1        | Junie,Claude Code  |         — | Code             |
+| gemma-4-26B-A4B-it                            |       1        | Junie,Claude Code  |         — | Hard Code        |
+| gemma-4-31B-it                                |       1        | Junie,Claude Code  |         — | Very Hard Code   |
 
 ## AI Agents
 

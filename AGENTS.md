@@ -157,6 +157,7 @@ before working in the areas they cover.
 ### Architecture & Structure
 
 - **[Project Structure](documentation/STRUCTURE.md)** — High-level layout, config hierarchy, build output, tech stack
+- **[Dependency Versions](documentation/DEPENDENCIES.md)** — Version management methodology, current status, and update commands
 - **[Feature Workspaces](features/FEATURES.md)** — Per-feature context bundles that inform implementation planning
 - **[Jackson Config](documentation/JACKSON.md)** — Customizer pattern, YAML mapper convention
 - **[Security Config](documentation/SECURITY.md)** — Actuator restrictions, logging paths

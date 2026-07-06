@@ -2,7 +2,7 @@
 
 [![Java](https://img.shields.io/badge/Java-25-red.svg)](https://www.oracle.com/java/)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.1.0-green.svg)](https://spring.io/projects/spring-boot)
-[![Maven](https://img.shields.io/badge/Maven-3.9.15-blue.svg)](https://maven.apache.org/)
+[![Maven](https://img.shields.io/badge/Maven-3.9.16-blue.svg)](https://maven.apache.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 JAIDoc is an **exercise in creating a Model Context Protocol (MCP) server** that makes JDK and Spring Boot documentation
@@ -237,6 +237,7 @@ the privacy.
 - **AI models** — [`documentation/AI-MODELS.md`](documentation/AI-MODELS.md)
 - **MCP setup** — [`documentation/MCP.md`](documentation/MCP.md)
 - **Project structure** — [`documentation/STRUCTURE.md`](documentation/STRUCTURE.md)
+- **Dependency versions** — [`documentation/DEPENDENCIES.md`](documentation/DEPENDENCIES.md)
 - **Jackson configuration** — [`documentation/JACKSON.md`](documentation/JACKSON.md)
 - **ONNX embedding model** — [`onnx/TRANSFORMER.md`](onnx/TRANSFORMER.md)
 - **Development log** — [`blackbook/BLACKBOOK.md`](blackbook/BLACKBOOK.md)
