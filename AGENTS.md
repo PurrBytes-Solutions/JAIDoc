@@ -31,10 +31,10 @@ Don't "improve" adjacent code, comments, or formatting. Match existing style.
 Define success criteria. Loop until verified.
 Don't follow steps. Define success and iterate independently.
 
-### Rule 5 — Token Budgets Are Not Advisory
+### Rule 5 — Know Your Constraints
 
-Per-task and per-session token budgets are enforced. If approaching the limit, summarize and start fresh. Surface the
-breach.
+Respect token and time limits. If approaching a limit, summarize and start fresh. Surface the breach.
+Do not repeat the same failed approach — try a different angle or ask for clarification.
 
 ### Rule 6 — Read Before You Write
 
@@ -81,7 +81,8 @@ fall back to asking for clarification. Do not retry a failing tool indefinitely.
 - **Do not use `@SuppressWarnings` without justification.** If a warning needs to be suppressed, add a comment
   explaining why.
 - **Prefer `Optional` over `null`.** Use `Optional` as a return type when a value may be absent, instead of returning
-  `null`.
+  `null`. Exception: null is acceptable for third-party API contracts, collection types, or when the API explicitly
+  requires it. Document the reason in a comment.
 
 ---
 
@@ -90,8 +91,9 @@ fall back to asking for clarification. Do not retry a failing tool indefinitely.
 - **Do not hardcode configuration values.** Use `application.yaml` or environment variables. Do not put URLs, ports,
   credentials, or configuration values directly in Java code. **Exception:** API base URLs (e.g., `ADOPTIUM_BASE`) are
   acceptable constants — they are not secrets and do not change per deployment.
-- **Use constructor injection for production code.** `@Autowired` on fields is acceptable in test classes where a
-  Spring context is not available.
+- **Use constructor injection for production code.** Field injection with `@Autowired` is acceptable in test classes
+  that do not load a Spring context (pure unit tests). All integration tests should use constructor injection like
+  production code.
 - **Use Lombok `@Slf4j` for logging.** Do not use `System.out.println`, `java.util.logging`, or manual `Logger` fields.
 
 ---
@@ -147,6 +149,25 @@ fall back to asking for clarification. Do not retry a failing tool indefinitely.
   integration tests so the CI pipeline can run only the appropriate type. Never use raw strings — reference the
   constants. See [TEST.md](documentation/TEST.md) for the full test conventions.
 
+## Git & Branching Rules
+
+- **Branch from `main`.** Create feature branches with the pattern `feature/<name>` or `fix/<issue>`. Never push
+  directly to `main`.
+- **Keep commits atomic.** Each commit should represent a single logical change.
+  Use [Conventional Commits](https://www.conventionalcommits.org/) for commit messages.
+- **Sync before merging.** Rebase or merge `main` into your branch before opening a PR to ensure you're working with
+  the latest changes.
+- **Resolve conflicts locally.** Don't force-push to resolve conflicts — merge or rebase cleanly, then push.
+
+## Dependency Management Rules
+
+- **Check [DEPENDENCIES.md](documentation/DEPENDENCIES.md) before adding new dependencies.** Understand the version
+  management methodology and current status.
+- **Prefer existing dependencies.** Before adding a new library, check if an existing dependency can fulfill the need.
+- **Pin versions explicitly.** Do not rely on dependency management plugins for version resolution without explicit
+  version declarations.
+- **Review security advisories.** Before upgrading a dependency, check for known security vulnerabilities.
+
 ---
 
 ## Project References
@@ -157,7 +178,8 @@ before working in the areas they cover.
 ### Architecture & Structure
 
 - **[Project Structure](documentation/STRUCTURE.md)** — High-level layout, config hierarchy, build output, tech stack
-- **[Dependency Versions](documentation/DEPENDENCIES.md)** — Version management methodology, current status, and update commands
+- **[Dependency Versions](documentation/DEPENDENCIES.md)** — Version management methodology, current status, and update
+  commands
 - **[Feature Workspaces](features/FEATURES.md)** — Per-feature context bundles that inform implementation planning
 - **[Jackson Config](documentation/JACKSON.md)** — Customizer pattern, YAML mapper convention
 - **[Security Config](documentation/SECURITY.md)** — Actuator restrictions, logging paths
