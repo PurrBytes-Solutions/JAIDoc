@@ -18,7 +18,7 @@ jdk-doc-workspace/
 spring-boot-artifacts/
 
 ### AI ###
-.claude/multi-gpu-settings.local.json
+.claude/server-settings.local.json
 .claude/settings.local.json
 .agents/
 .cline/
