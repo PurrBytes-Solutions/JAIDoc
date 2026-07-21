@@ -17,16 +17,26 @@ complexity.
 
 ### Actual Server
 
-| Component             | Specification                        |
-|-----------------------|--------------------------------------|
-| Motherboard           | Machinist X99 MD8 Dual CPU           |
-| CPU                   | 2 x E5 2680 V4                       |
-| RAM                   | 2 x 16GB DDR4-2400 ECC               |
-| GPU 1 - PCI-E 3.0 16X | NVIDIA RTX 3090 24GB                 |
-| GPU 2 - PCI-E 3.0 16X | NVIDIA RTX 3060 12GB                 |
-| VRAM                  | 36 GB (layer split across both GPUs) |
-| PSU 1                 | MSI 1,000 Watts                      |
-| PSU 2                 | MSI 750 Watts                        |
+| Component             | Specification                        |                       Buy Link                       |
+|-----------------------|--------------------------------------|:----------------------------------------------------:|
+| Motherboard           | Machinist X99 MD8 Dual Intel CPU     | https://es.aliexpress.com/item/1005009718980845.html |
+| CPU                   | 2 x E5 2680 V4                       |      https://www.amazon.com/dp/B0D8VS42T8?th=1       |
+| RAM                   | 2 x 16GB DDR4-2400 ECC               |   https://es.aliexpress.com/item/33002249520.html    |
+| GPU 1 - PCI-E 3.0 16X | NVIDIA RTX 3090 24GB                 |                                                      |
+| GPU 2 - PCI-E 3.0 16X | NVIDIA RTX 3060 12GB                 |                                                      |
+| PSU 1                 | MSI 1,000 Watts                      |      https://www.amazon.com/dp/B0FJZHR289?th=1       |
+| PSU 2                 | MSI 750 Watts                        |      https://www.amazon.com/dp/B0FJZHMSV9?th=1       |
+| VRAM                  | 36 GB (layer split across both GPUs) |                                                      |
+
+#### Extra hardware
+
+| Name                               | Buy Link                                             |
+|------------------------------------|------------------------------------------------------|
+| 12VHPWR Cable Extension            | https://www.amazon.com/dp/B0C4176N2F?th=1            |
+| PC Power Button                    | https://www.amazon.com/dp/B0F4DK1KBL                 |
+| E-ATX Open Chassis Case Rack       | https://www.amazon.com/dp/B0DDXBRJZ3                 |
+| E-ATX Open Chassis Case Rack       | https://www.amazon.com/dp/B0DDXBRJZ3                 |
+| 120Hz OLED Gaming Portable Monitor | https://es.aliexpress.com/item/1005012583492427.html |
 
 ## AI Software Server
 
