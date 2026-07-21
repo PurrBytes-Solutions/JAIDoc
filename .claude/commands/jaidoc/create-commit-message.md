@@ -125,10 +125,19 @@ git commit -m "feat(auth): add JWT refresh token rotation" -m "Implement automat
 
 ### Splitting Into Multiple Commits
 
-If multiple changes could justify separate commits, suggest splitting them and provide a message for each one, each in
-its own escaped Markdown block. For each suggested commit:
+**Split into multiple commits when changes touch 3 or more distinct logical areas** (e.g., auth, docs, config, tests,
+different modules). This is not optional — it is required for clean git history.
 
-1. Add a short plain-text note before the block explaining the suggested split.
+**Detect distinct areas automatically** by analyzing file paths:
+
+- Group files by their immediate parent directory (e.g., `src/auth/`, `docs/`, `config/`, `tests/unit/`)
+- If 3+ distinct directories are touched, split is mandatory
+- If 2 directories are touched and changes are clearly unrelated (e.g., feature code + documentation), split
+- If all files are in the same module or area, keep as a single commit
+
+**For each suggested commit:**
+
+1. Add a short plain-text note before the block explaining the split rationale.
 2. List the specific files that belong to that commit using a bullet list with the label **Files:** (or the equivalent
    in the chosen language). Group files by their relationship to the commit's purpose.
 3. Then show the commit message in its escaped Markdown block.
@@ -137,12 +146,19 @@ its own escaped Markdown block. For each suggested commit:
 5. Separate each commit's block from the next with a `---` horizontal rule.
 6. If a ticket was detected, repeat the same `Refs: <ticket>` footer on every commit.
 
+**When NOT to split:**
+
+- All changes are in the same module/package and serve a single purpose
+- The change is small (< 5 files) and conceptually unified
+- Documentation updates that span multiple files but address one topic
+- Test additions that directly support a single feature change
+
 Example of the correct multi-commit output (with a ticket `ABC-123`):
 
 `````text
-The changes touch authentication logic and documentation separately. I suggest splitting into two commits:
+The changes touch three distinct areas: authentication logic, configuration, and documentation. Splitting into three commits:
 
-**Commit 1** — New auth feature
+**Commit 1** — Authentication feature
 
 **Files:**
 - src/auth/jwt.ts
@@ -168,7 +184,30 @@ git commit -m "feat(auth): add JWT refresh token rotation" -m "Implement automat
 
 ---
 
-**Commit 2** — Documentation update
+**Commit 2** — Configuration update
+
+**Files:**
+- config/auth.config.ts
+- config/security.policy.ts
+
+```
+chore(config): update authentication configuration
+
+Adjust token expiration settings to align with the new single-use refresh token policy.
+
+Refs: ABC-123
+```
+
+Suggested git commands:
+
+```
+git add config/auth.config.ts config/security.policy.ts
+git commit -m "chore(config): update authentication configuration" -m "Adjust token expiration settings to align with the new single-use refresh token policy." -m "Refs: ABC-123"
+```
+
+---
+
+**Commit 3** — Documentation update
 
 **Files:**
 - docs/auth.md
