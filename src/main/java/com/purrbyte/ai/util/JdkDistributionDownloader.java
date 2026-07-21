@@ -38,19 +38,23 @@ import java.util.function.Consumer;
 public class JdkDistributionDownloader {
 
     private static final String ADOPTIUM_BASE = "https://api.adoptium.net/v3";
-    private static final int PAGE_SIZE = 50;
-    private static final int MAX_PAGES = 6;
     private static final int DOWNLOAD_BUFFER = 1 << 16;
 
     private final Executor downloadExecutor = Executors.newVirtualThreadPerTaskExecutor();
     private final String downloadDirectory;
+    private final int pageSize;
+    private final int maxPages;
     private final RestClient restClient;
     private final JsonMapper jsonMapper;
 
     public JdkDistributionDownloader(@Value("${jdk.distribution.download.directory}") String downloadDirectory,
+                                     @Value("${jdk.distribution.api.page.size}") int pageSize,
+                                     @Value("${jdk.distribution.api.max.pages}") int maxPages,
                                      RestClient restClient,
                                      JsonMapper jsonMapper) {
         this.downloadDirectory = downloadDirectory;
+        this.pageSize = pageSize;
+        this.maxPages = maxPages;
         this.jsonMapper = jsonMapper;
         this.restClient = restClient;
     }
@@ -99,8 +103,8 @@ public class JdkDistributionDownloader {
                 Files.move(partFile, targetFile, StandardCopyOption.REPLACE_EXISTING);
                 log.info("JDK distribution downloaded to {}", targetFile);
                 return targetFile;
-            } catch (Exception e) {
-                throw new CompletionException(new IOException("Failed to download JDK distribution for version: " + version, e));
+            } catch (IOException ex) {
+                throw new CompletionException(new IOException("Failed to download JDK distribution for version: " + version, ex));
             }
         }, downloadExecutor);
     }
@@ -111,10 +115,8 @@ public class JdkDistributionDownloader {
      */
     Optional<AdoptiumPackage> resolveBinary(String version, String os, String arch) {
         int[] req = parseVersion(version);
-        for (int page = 0; page < MAX_PAGES; page++) {
-            String url = ADOPTIUM_BASE + "/assets/feature_releases/" + req[0] + "/ga"
-                    + "?architecture=" + arch + "&heap_size=normal&image_type=jdk&jvm_impl=hotspot"
-                    + "&os=" + os + "&vendor=eclipse&page=" + page + "&page_size=" + PAGE_SIZE + "&sort_order=DESC";
+        for (int page = 0; page < maxPages; page++) {
+            String url = ADOPTIUM_BASE + "/assets/feature_releases/" + req[0] + "/ga?architecture=" + arch + "&heap_size=normal&image_type=jdk&jvm_impl=hotspot&os=" + os + "&vendor=eclipse&page=" + page + "&page_size=" + pageSize + "&sort_order=DESC";
             String body = restClient.get().uri(URI.create(url)).retrieve().body(String.class);
             if (body == null || body.isBlank()) {
                 break;

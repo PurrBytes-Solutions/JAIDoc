@@ -32,7 +32,10 @@ class SpringBootArtifactDownloaderTest extends UnitTest {
     void setUp() {
         JsonMapper jsonMapper = new JsonMapper();
         restClient = mock(RestClient.class);
-        downloader = new SpringBootArtifactDownloader(tempDir.toString(), restClient, jsonMapper);
+        downloader = new SpringBootArtifactDownloader(tempDir.toString(),
+                "https://repo1.maven.org/maven2/org/springframework/boot/spring-boot/maven-metadata.xml",
+                "https://repo1.maven.org/maven2/org/springframework/boot/spring-boot",
+                restClient, jsonMapper);
     }
 
     private void stubMetadataResponse(String xml) {

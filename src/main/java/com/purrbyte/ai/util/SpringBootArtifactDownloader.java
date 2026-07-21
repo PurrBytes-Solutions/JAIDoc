@@ -44,21 +44,25 @@ import java.util.regex.Pattern;
 @Component
 public class SpringBootArtifactDownloader {
 
-    private static final String MAVEN_METADATA_URL = "https://repo1.maven.org/maven2/org/springframework/boot/spring-boot/maven-metadata.xml";
-    private static final String MAVEN_REPO_BASE = "https://repo1.maven.org/maven2/org/springframework/boot/spring-boot";
     private static final int DOWNLOAD_BUFFER = 65536;
     private static final Pattern LATEST_TAG = Pattern.compile("<latest>([^<]+)</latest>");
 
     private final Executor downloadExecutor = Executors.newVirtualThreadPerTaskExecutor();
     private final String downloadDirectory;
+    private final String mavenMetadataUrl;
+    private final String mavenRepoBase;
     private final RestClient restClient;
     private final JsonMapper jsonMapper;
 
     public SpringBootArtifactDownloader(
             @Value("${spring.boot.artifacts.download.directory}") String downloadDirectory,
+            @Value("${maven.metadata.url}") String mavenMetadataUrl,
+            @Value("${maven.repo.base}") String mavenRepoBase,
             RestClient restClient,
             JsonMapper jsonMapper) {
         this.downloadDirectory = downloadDirectory;
+        this.mavenMetadataUrl = mavenMetadataUrl;
+        this.mavenRepoBase = mavenRepoBase;
         this.restClient = restClient;
         this.jsonMapper = jsonMapper;
     }
@@ -70,7 +74,7 @@ public class SpringBootArtifactDownloader {
      * @return the latest release version string, or empty if the version cannot be resolved
      */
     public Optional<String> resolveLatestVersion() {
-        String xml = restClient.get().uri(URI.create(MAVEN_METADATA_URL)).retrieve().body(String.class);
+        String xml = restClient.get().uri(URI.create(mavenMetadataUrl)).retrieve().body(String.class);
         if (xml != null && !xml.isBlank()) {
             Matcher matcher = LATEST_TAG.matcher(xml);
             if (matcher.find()) {
@@ -137,7 +141,7 @@ public class SpringBootArtifactDownloader {
             log.info("Spring Boot artifact already downloaded at {} (type={})", targetFile, artifactType);
             return CompletableFuture.completedFuture(targetFile);
         }
-        String downloadUrl = MAVEN_REPO_BASE + "/" + version + "/spring-boot-" + version + suffix + ".jar";
+        String downloadUrl = mavenRepoBase + "/" + version + "/spring-boot-" + version + suffix + ".jar";
         Path partFile = path.resolve(fileName + ".part");
         return CompletableFuture.supplyAsync(() -> {
             try {

@@ -2,6 +2,12 @@ jdk:
   distribution:
     download:
       directory: target/test-jdk-distributions
+    api:
+      page.size: 50
+      max.pages: 6
+maven:
+  metadata.url: https://repo1.maven.org/maven2/org/springframework/boot/spring-boot/maven-metadata.xml
+  repo.base: https://repo1.maven.org/maven2/org/springframework/boot/spring-boot
 spring:
   boot:
     artifacts:
