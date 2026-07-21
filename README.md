@@ -5,9 +5,9 @@
 [![Maven](https://img.shields.io/badge/Maven-3.9.16-blue.svg)](https://maven.apache.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-JAIDoc is an **exercise in creating a Model Context Protocol (MCP) server** that makes JDK and Spring Boot documentation
-searchable and consumable by AI models. It's a practical example of how to bridge the gap between traditional technical
-documentation and AI-driven development workflows — entirely with local AI.
+JAIDoc is an **exercise in creating a Model Context Protocol (MCP) server** that makes JDK documentation searchable and
+consumable by AI models — with Spring Boot support planned. It's a practical example of how to bridge the gap between
+traditional technical documentation and AI-driven development workflows — entirely with local AI.
 
 ## Why JAIDoc?
 
@@ -35,8 +35,8 @@ It does this by:
 - **MCP tools**: `listVersions()`, `searchJavadoc()`, `startDocGeneration()`, `getDocGenerationProgress()`,
   `startIngest()`, `getIngestProgress()` — fully wired to the semantic search service
 
-This project demonstrates the full stack: doclet → JSON → SQLite + Hibernate Search/Lucene → MCP tools. It's meant to
-be studied, adapted, and used as a reference for building your own documentation MCP servers — starting with the JDK SDK
+This project demonstrates the full stack: doclet → JSON → SQLite + Hibernate Search/Lucene → MCP tools. It's meant to be
+studied, adapted, and used as a reference for building your own documentation MCP servers — starting with the JDK SDK
 and growing into Spring Boot's more complex documentation ecosystem.
 
 ## Quick Start
@@ -82,9 +82,9 @@ See [onnx/TRANSFORMER.md](onnx/TRANSFORMER.md) for available models, variants, a
 > data in the database during ingestion.
 
 The FP16 base model (`model.onnx`) runs significantly faster on CPU than the quantized INT8 variant
-(`model_qint8_avx512_vnni.onnx`), despite being larger. On Intel Core Ultra 9 275HX hardware, the FP16 model
-delivers noticeably better throughput. However, performance varies by CPU — **test both variants on your machine** to
-see which gives you the best results:
+(`model_qint8_avx512_vnni.onnx`), despite being larger. On Intel Core Ultra 9 275HX hardware, the FP16 model delivers
+noticeably better throughput. However, performance varies by CPU — **test both variants on your machine** to see which
+gives you the best results:
 
 ```powershell
 # Use the FP16 base model (larger file, faster on many CPUs)
@@ -94,8 +94,8 @@ $env:AI_TRANSFORMER_ONNX = "./onnx/model.onnx"
 $env:AI_TRANSFORMER_ONNX = "./onnx/model_qint8_avx512_vnni.onnx"
 ```
 
-The default is `model.onnx` (FP16), but override it with the `AI_TRANSFORMER_ONNX` environment variable to try the
-other variant.
+The default is `model.onnx` (FP16), but override it with the `AI_TRANSFORMER_ONNX` environment variable to try the other
+variant.
 
 > **Crucial: the same model must be used for both ingestion and search.** Ingesting with one variant and searching with
 > another produces incompatible embeddings — the embeddings are tied to the specific model, not the model family.
@@ -121,8 +121,7 @@ The MCP server exposes the following query capabilities through its tools:
 You can ask the AI model: *"How do I read a file with NIO?"* and the model will call
 `searchJavadoc("25", "read file NIO", 5)`
 which returns the most relevant `java.nio.file.Files` documentation chunks — including the `readAllLines` method
-signature
-and description.
+signature and description.
 
 ### Ingesting documentation
 
@@ -166,9 +165,9 @@ separately so users can query documentation for any supported version.
 
 ### Phase 2: Spring Boot Integration
 
-Spring Boot documentation is structured around AsciiDoc (`.adoc`) files — migration guides, how-to guides, and
-reference documentation. Unlike JDK Javadoc (which a custom doclet can serialize to JSON), adoc requires a different
-ingestion pipeline:
+Spring Boot documentation is structured around AsciiDoc (`.adoc`) files — migration guides, how-to guides, and reference
+documentation. Unlike JDK Javadoc (which a custom doclet can serialize to JSON), adoc requires a different ingestion
+pipeline:
 
 1. **adoc Parsing** — Extract sections, subsections, cross-references, and code examples from Spring Boot's adoc source
 2. **Section Organization** — Structure the parsed content hierarchically so MCP tools can query by section, not just by
@@ -207,10 +206,10 @@ graph LR
     server["🖥️ JAIDoc Server<br/>MCP Protocol / streamable"]
     db["📊 SQLite + Lucene<br/>JDK · Spring · …"]
     jdkdocs["📄 JDK Docs<br/>Javadoc JSON"]
-    sbdocs["📄 Spring Boot Docs<br/>adoc · Migration · How-To"]
+    sbdocs["📄 Spring Boot Docs<br/>adoc · Migration · How-To<br/><em>planned</em>"]
     ai <-->|" MCP (streamable) "| server
     server -->|" Search / Ingest "| jdkdocs
-    server -->|" Ingest (adoc, planned) "| sbdocs
+    server -.->|" Ingest (adoc, planned) "| sbdocs
     server -->|" Search "| db
 ```
 
