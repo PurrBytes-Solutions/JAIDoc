@@ -33,10 +33,9 @@ public class JavadocRunner {
     private final long javadocTimeoutSeconds;
     private final Path docletDirectory;
 
-    public JavadocRunner(
-            @Value("${doclet.javadoc.home:}") String javadocHome,
-            @Value("${doclet.javadoc.timeout:600}") long javadocTimeoutSeconds,
-            @Value("${doclet.jar.directory:doclet}") Path docletDirectory) {
+    public JavadocRunner(@Value("${doclet.javadoc.home:}") String javadocHome,
+                         @Value("${doclet.javadoc.timeout:600}") long javadocTimeoutSeconds,
+                         @Value("${doclet.jar.directory:doclet}") Path docletDirectory) {
         this.javadocHome = (javadocHome == null || javadocHome.isBlank())
                 ? Path.of(System.getProperty("java.home"))
                 : Path.of(javadocHome);
@@ -50,14 +49,13 @@ public class JavadocRunner {
      * @param moduleRoot         the extracted source directory
      * @param version            JDK version
      * @param modules            modules to document
-     * @param tempOutputDir      temporary directory for javadoc output
+     * @param tempOutputDir      temporary directory for Javadoc output
      * @param destinationDir     destination directory for the documentation
      * @param progressCallback   callback for progress updates
      * @param sourceWasExtracted true if the source was newly extracted (allows cleanup)
      * @return path to the generated documentation directory
      */
-    public Path run(Path moduleRoot, String version, List<String> modules, Path tempOutputDir,
-                    Path destinationDir, Consumer<Progress> progressCallback, boolean sourceWasExtracted) throws IOException {
+    public Path run(Path moduleRoot, String version, List<String> modules, Path tempOutputDir, Path destinationDir, Consumer<Progress> progressCallback, boolean sourceWasExtracted) throws IOException {
         if (modules.isEmpty()) {
             throw new IOException("No modules found to document under " + moduleRoot);
         }
@@ -65,15 +63,12 @@ public class JavadocRunner {
         Path javadocBin = resolveJavadocBin();
         List<String> command = buildCommand(javadocBin, moduleRoot, version, modules, tempOutputDir);
         log.info("Executing javadoc: {}", String.join(" ", command));
-
         ProcessBuilder pb = new ProcessBuilder(command);
         pb.redirectErrorStream(true);
         Process process = pb.start();
-
         if (progressCallback != null) {
             progressCallback.accept(Progress.of(0, Progress.MODULE_JAVADOC));
         }
-
         readProcessOutput(process);
         boolean exited = waitForProcess(process);
         if (!exited) {
@@ -81,11 +76,9 @@ public class JavadocRunner {
             deleteDirectory(tempOutputDir);
             throw new IOException("javadoc process timed out after " + javadocTimeoutSeconds + " seconds");
         }
-
         int exitCode = process.exitValue();
         validateJavadocOutput(tempOutputDir, exitCode);
         copyDirectory(tempOutputDir, destinationDir);
-
         if (sourceWasExtracted && Files.exists(moduleRoot)) {
             try {
                 deleteDirectory(moduleRoot);
@@ -93,7 +86,6 @@ public class JavadocRunner {
                 log.warn("Failed to clean up source dir {}: {}", moduleRoot, e.getMessage());
             }
         }
-
         if (progressCallback != null) {
             progressCallback.accept(Progress.of(100, Progress.MODULE_JAVADOC));
         }
@@ -111,11 +103,9 @@ public class JavadocRunner {
         return javadocBin;
     }
 
-    private List<String> buildCommand(Path javadocBin, Path moduleRoot, String version,
-                                      List<String> modules, Path tempOutputDir) {
+    private List<String> buildCommand(Path javadocBin, Path moduleRoot, String version, List<String> modules, Path tempOutputDir) {
         List<String> command = new ArrayList<>();
         command.add(javadocBin.toString());
-
         String docletPath = resolveDocletPath();
         if (docletPath != null) {
             command.add("-docletpath");
@@ -141,7 +131,7 @@ public class JavadocRunner {
         return command;
     }
 
-    private void readProcessOutput(Process process) throws IOException {
+    private void readProcessOutput(Process process) {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -154,11 +144,7 @@ public class JavadocRunner {
 
     private boolean waitForProcess(Process process) throws IOException {
         try {
-            boolean exited = process.waitFor(javadocTimeoutSeconds, TimeUnit.SECONDS);
-            if (!exited) {
-                return false;
-            }
-            return true;
+            return process.waitFor(javadocTimeoutSeconds, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             throw new IOException("javadoc process interrupted", e);
@@ -175,7 +161,7 @@ public class JavadocRunner {
         }
     }
 
-    private String resolveDocletPath() {
+    String resolveDocletPath() {
         try (var stream = Files.list(docletDirectory)) {
             return stream.filter(p -> p.getFileName().toString().equals("JAIDoc-doclet.jar"))
                     .findFirst()

@@ -1,6 +1,5 @@
 package com.purrbyte.ai.service;
 
-import com.purrbyte.ai.util.ZIPHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
@@ -37,18 +36,6 @@ public class SourceExtractor {
 
     public SourceExtractor(@Value("${doclet.work.directory}") Path workDirectory) {
         this.workDirectory = workDirectory;
-    }
-
-    /**
-     * Locates the {@code lib/src.zip} of the running JDK.
-     */
-    public Path localSrcZip() throws IOException {
-        Path srcZip = Path.of(System.getProperty("java.home"), "lib", "src.zip");
-        if (!Files.exists(srcZip)) {
-            throw new IOException("JDK source archive not found at " + srcZip
-                    + " — this JDK distribution does not ship lib/src.zip.");
-        }
-        return srcZip;
     }
 
     /**
