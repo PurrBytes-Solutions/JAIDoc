@@ -12,9 +12,9 @@ or documentation:
 - **Details** — Small quirks, workarounds, and observations about the AI tools and workflow
 
 Each dated entry lives in its own pair of files — `YYYY-MM-DD.md` and `YYYY-MM-DD.html`. This file is the Black Book's
-**rules and index**: the [Index](#index) below lists every entry, most recent first, so the current state of the
-project is always immediately visible. New notes made on the same day are appended to that day's existing files (both
-formats), so entries from the same session stay grouped together.
+**rules and index**: the [Index](#index) below lists every entry, most recent first, so the current state of the project
+is always immediately visible. New notes made on the same day are appended to that day's existing files (both formats),
+so entries from the same session stay grouped together.
 
 It's not a formal artifact. It's a scratchpad for the things worth remembering, but that doesn't fit anywhere else.
 
@@ -56,8 +56,8 @@ It's not a formal artifact. It's a scratchpad for the things worth remembering, 
 - **If they do not exist**, create both files from the templates in [HTML Rendering](#html-rendering) and the Markdown
   shape below, wire up navigation (see [Cross-Entry Navigation](#cross-entry-navigation)), and prepend the day to the
   [Index](#index).
-- The `.md` and `.html` files must always stay in sync: every entry exists in both, with the same title, category,
-  and content.
+- The `.md` and `.html` files must always stay in sync: every entry exists in both, with the same title, category, and
+  content.
 
 Markdown file shape:
 
@@ -92,8 +92,8 @@ When a **new-dated file** becomes the newest entry:
 
 ## HTML Rendering
 
-Every HTML entry links the shared `blackbook.css`, so the markup must use the classes that stylesheet defines. Use
-this section as the source of truth when generating HTML from a note.
+Every HTML entry links the shared `blackbook.css`, so the markup must use the classes that stylesheet defines. Use this
+section as the source of truth when generating HTML from a note.
 
 ### Category Mapping
 
@@ -103,7 +103,7 @@ tab label:
 | Emoji | Meaning       | CSS class    | Tab label          |
 |-------|---------------|--------------|--------------------|
 | 🔄    | Change        | `cat-change` | `🔄 Change`        |
-| 🏗️   | Architecture  | `cat-arch`   | `🏗️ Architecture` |
+| 🏗️    | Architecture  | `cat-arch`   | `🏗️ Architecture`  |
 | 📋    | Planning      | `cat-plan`   | `📋 Planning`      |
 | 🐛    | Bug           | `cat-bug`    | `🐛 Bug`           |
 | 💡    | Idea          | `cat-idea`   | `💡 Idea`          |
@@ -168,8 +168,8 @@ entry, and a footer. Skeleton (placeholders in `<<...>>`):
 </html>
 ```
 
-- `<<slug>>` is the entry (or subsection) title in kebab-case (lowercase, spaces → `-`, drop punctuation/emoji),
-  unique within the page.
+- `<<slug>>` is the entry (or subsection) title in kebab-case (lowercase, spaces → `-`, drop punctuation/emoji), unique
+  within the page.
 - The `.tab` text is the category tab label from the table above; the `<h2>` is the plain title (no emoji).
 - For an entry with subsections, add a nested `<ul class="toc-sub cat-X">` of `<li><a href="#sub-slug">…</a></li>`
   under that entry's `<li>`, and render each subsection as `<h3 id="sub-slug">EMOJI Subsection</h3>`.
@@ -275,6 +275,7 @@ makes the SVG responsive:
 
 Most recent first. Each line links the HTML and Markdown files for a day.
 
+- **2026-07-21** — [HTML](2026-07-21.html) · [Markdown](2026-07-21.md)
 - **2026-07-03** — [HTML](2026-07-03.html) · [Markdown](2026-07-03.md)
 - **2026-06-24** — [HTML](2026-06-24.html) · [Markdown](2026-06-24.md)
 - **2026-06-21** — [HTML](2026-06-21.html) · [Markdown](2026-06-21.md)
