@@ -226,6 +226,7 @@ public class IngestionService {
             String line;
             while ((line = reader.readLine()) != null) {
                 if (line.isBlank()) {
+                    skipped++;
                     continue;
                 }
                 JsonNode node = jsonMapper.readTree(line);

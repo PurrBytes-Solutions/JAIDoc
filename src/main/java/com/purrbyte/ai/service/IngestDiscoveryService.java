@@ -101,8 +101,6 @@ public class IngestDiscoveryService {
             log.info("Successfully ingested version {} (status={}, chunks={})", jdkVersion.getVersion(), jdkVersion.getStatus(), jdkVersion.getChunkCount());
         } catch (IOException e) {
             log.error("Ingestion failed for version {}: {}", version, e.getMessage(), e);
-        } catch (Exception e) {
-            log.error("Unexpected error processing version {}: {}", version, e.getMessage(), e);
         }
     }
 }

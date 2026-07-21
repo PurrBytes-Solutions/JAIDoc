@@ -8,8 +8,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.mockito.Mockito;
 
+import static org.mockito.Mockito.mock;
+
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -47,8 +48,8 @@ class DocumentationServiceTest extends UnitTest {
         void noDocletJarInDocletDir_returnsNull() throws IOException {
             setupDirectories();
             // docletDirectory is an empty temp dir — no JAIDoc-doclet.jar present
-            DocumentationService service = createService();
-            String result = service.resolveDocletPath();
+            JavadocRunner runner = new JavadocRunner("", 600, docletDirectory);
+            String result = runner.resolveDocletPath();
             assertThat(result).isNull();
         }
 
@@ -56,8 +57,8 @@ class DocumentationServiceTest extends UnitTest {
         void docletJarInDocletDir_returnsIt() throws IOException {
             setupDirectories();
             Files.writeString(docletDirectory.resolve("JAIDoc-doclet.jar"), "fake-jar");
-            DocumentationService service = createService();
-            String result = service.resolveDocletPath();
+            JavadocRunner runner = new JavadocRunner("", 600, docletDirectory);
+            String result = runner.resolveDocletPath();
             assertThat(result).isEqualTo(docletDirectory.resolve("JAIDoc-doclet.jar").toString());
         }
     }
@@ -79,7 +80,10 @@ class DocumentationServiceTest extends UnitTest {
     class ListAvailableVersionsTest {
 
         private DocumentationService createServiceWithRepo(JdkVersionRepository repo) {
-            return new DocumentationService(null, repo, workDirectory, outputDirectory, "", docletDirectory, "", 600);
+            return new DocumentationService(
+                    null, repo,
+                    mock(SourceExtractor.class), mock(JavadocRunner.class), mock(ZipManager.class),
+                    workDirectory, outputDirectory, "", "");
         }
 
         @Test
@@ -124,7 +128,7 @@ class DocumentationServiceTest extends UnitTest {
             Path jdkDir = outputDirectory.resolve("jdk");
             Files.createDirectories(jdkDir);
             createTestZipWithVersionDir(jdkDir, "25.0.3", "index.json", "{}", "elements.json", "[]");
-            DocumentationService service = createService();
+            DocumentationService service = createServiceWithRealZipManager();
             Path zipPath = jdkDir.resolve("25.0.3.zip");
             assertThat(service.getVersionZip("25.0.3")).isEqualTo(zipPath);
         }
@@ -135,7 +139,7 @@ class DocumentationServiceTest extends UnitTest {
             Path subDir = outputDirectory.resolve("jdk");
             Files.createDirectories(subDir);
             createTestZipWithVersionDir(subDir, "25.0.3", "index.json", "{}", "elements.json", "[]");
-            DocumentationService service = createService();
+            DocumentationService service = createServiceWithRealZipManager();
             Path zipPath = subDir.resolve("25.0.3.zip");
             assertThat(service.getVersionZip("25.0.3")).isEqualTo(zipPath);
         }
@@ -143,7 +147,7 @@ class DocumentationServiceTest extends UnitTest {
         @Test
         void nonExistentVersion_returnsNull() throws IOException {
             setupDirectories();
-            DocumentationService service = createService();
+            DocumentationService service = createServiceWithRealZipManager();
             assertThat(service.getVersionZip("99.0.0")).isNull();
         }
     }
@@ -157,7 +161,7 @@ class DocumentationServiceTest extends UnitTest {
             Path jdkDir = outputDirectory.resolve("jdk");
             Files.createDirectories(jdkDir);
             createTestZipWithVersionDir(jdkDir, "25.0.3", "index.json", "{}", "elements.json", "[]");
-            DocumentationService service = createService();
+            DocumentationService service = createServiceWithRealZipManager();
             assertThat(service.isVersionGenerated("25.0.3")).isTrue();
         }
 
@@ -167,7 +171,7 @@ class DocumentationServiceTest extends UnitTest {
             Path jdkDir = outputDirectory.resolve("jdk");
             Files.createDirectories(jdkDir);
             createTestZipWithVersionDir(jdkDir, "25.0.3", "index.json", "{}", "elements.json", "[]");
-            DocumentationService service = createService();
+            DocumentationService service = createServiceWithRealZipManager();
             assertThat(service.isVersionGenerated("25.0.3")).isTrue();
         }
 
@@ -178,7 +182,7 @@ class DocumentationServiceTest extends UnitTest {
             Path jdkDir = outputDirectory.resolve("jdk");
             Files.createDirectories(jdkDir);
             createTestZipWithVersionDir(jdkDir, "25.0.3", "elements.json", "[]");
-            DocumentationService service = createService();
+            DocumentationService service = createServiceWithRealZipManager();
             assertThat(service.isVersionGenerated("25.0.3")).isFalse();
         }
 
@@ -189,14 +193,14 @@ class DocumentationServiceTest extends UnitTest {
             Files.createDirectories(jdkDir);
             // ZIP exists but no index.json inside
             createTestZipWithVersionDir(jdkDir, "25.0.3", "elements.json", "[]");
-            DocumentationService service = createService();
+            DocumentationService service = createServiceWithRealZipManager();
             assertThat(service.isVersionGenerated("25.0.3")).isFalse();
         }
 
         @Test
         void nonExistentVersion_returnsFalse() throws IOException {
             setupDirectories();
-            DocumentationService service = createService();
+            DocumentationService service = createServiceWithRealZipManager();
             assertThat(service.isVersionGenerated("99.0.0")).isFalse();
         }
     }
@@ -211,8 +215,8 @@ class DocumentationServiceTest extends UnitTest {
             Files.createDirectories(jdkDir);
             Files.writeString(jdkDir.resolve("index.json"), "{}");
             Files.writeString(jdkDir.resolve("chunks.jsonl"), "line1");
-            DocumentationService service = createService();
-            invokeZipVersion(service, jdkDir, "25.0.3");
+            ZipManager zipManager = new ZipManager(outputDirectory);
+            invokeZipVersion(zipManager, jdkDir, "25.0.3");
             // ZIP should be at data/jdk/25.0.3.zip
             Path zipPath = outputDirectory.resolve("jdk").resolve("25.0.3.zip");
             assertThat(zipPath).exists();
@@ -239,18 +243,15 @@ class DocumentationServiceTest extends UnitTest {
                 zos.write("{}".getBytes(StandardCharsets.UTF_8));
                 zos.closeEntry();
             }
-            DocumentationService service = createService();
-            invokeZipVersion(service, jdkDir, "25.0.3");
+            ZipManager zipManager = new ZipManager(outputDirectory);
+            invokeZipVersion(zipManager, jdkDir, "25.0.3");
             // ZIP should still exist and original directory should still exist
             assertThat(zipPath).exists();
             assertThat(Files.exists(jdkDir)).isTrue();
         }
 
-        @SuppressWarnings("SameParameterValue")
-        private void invokeZipVersion(DocumentationService service, Path versionDir, String version) throws Exception {
-            Method method = DocumentationService.class.getDeclaredMethod("zipVersion", Path.class, String.class);
-            method.setAccessible(true);
-            method.invoke(service, versionDir, version);
+        private void invokeZipVersion(ZipManager zipManager, Path versionDir, String version) throws IOException {
+            zipManager.zipVersion(versionDir, version);
         }
     }
 
@@ -261,8 +262,8 @@ class DocumentationServiceTest extends UnitTest {
         void extract_createsExtractDirWithContents() throws Exception {
             setupDirectories();
             Path zipFile = createFakeJdkZip("jdk-25.0.3-ga");
-            DocumentationService service = createService();
-            invokeExtractSourceZip(service, zipFile, "25.0.3", null);
+            SourceExtractor sourceExtractor = new SourceExtractor(workDirectory);
+            invokeExtractSourceZip(sourceExtractor, zipFile, "25.0.3", null);
             Path extractDir = workDirectory.resolve("jdk-sources").resolve("25.0.3");
             assertThat(extractDir).exists();
             assertThat(Files.exists(extractDir.resolve("jdk-25.0.3-ga").resolve("Test.java"))).isTrue();
@@ -276,8 +277,8 @@ class DocumentationServiceTest extends UnitTest {
             // Pre-populate the directory so we can verify the method didn't re-extract
             Files.writeString(extractDir.resolve("jdk-25.0.3-ga").resolve("Test.java"), "public class Test {}");
             Path zipFile = createFakeJdkZip("jdk-25.0.3-ga");
-            DocumentationService service = createService();
-            invokeExtractSourceZip(service, zipFile, "25.0.3", null);
+            SourceExtractor sourceExtractor = new SourceExtractor(workDirectory);
+            invokeExtractSourceZip(sourceExtractor, zipFile, "25.0.3", null);
             // The existing directory is reused — content should not change
             assertThat(extractDir).exists();
             assertThat(Files.exists(extractDir.resolve("jdk-25.0.3-ga").resolve("Test.java"))).isTrue();
@@ -287,9 +288,9 @@ class DocumentationServiceTest extends UnitTest {
         void zipSlipEntry_skipped() throws Exception {
             setupDirectories();
             Path zipFile = createZipWithZipSlipEntry();
-            DocumentationService service = createService();
+            SourceExtractor sourceExtractor = new SourceExtractor(workDirectory);
             // Zip-slip entry should be skipped, extraction should succeed
-            invokeExtractSourceZip(service, zipFile, "25.0.3", null);
+            invokeExtractSourceZip(sourceExtractor, zipFile, "25.0.3", null);
             assertThat(workDirectory.resolve("jdk-sources").resolve("25.0.3")).exists();
             // The evil.txt should NOT exist
             Path evilFile = Path.of("/etc/evil.txt");
@@ -299,7 +300,7 @@ class DocumentationServiceTest extends UnitTest {
 
     /**
      * Creates a test ZIP with a version-prefixed directory structure, matching what
-     * {@link DocumentationService#zipVersion} produces.
+     * {@link ZipManager#zipVersion} produces.
      */
     @SuppressWarnings({"SameParameterValue", "UnusedReturnValue"})
     private Path createTestZipWithVersionDir(Path dir, String version, String... entries) throws IOException {
@@ -322,14 +323,23 @@ class DocumentationServiceTest extends UnitTest {
     }
 
     private DocumentationService createService() {
-        return new DocumentationService(null, null, workDirectory, outputDirectory, "", docletDirectory, "", 600);
+        return new DocumentationService(
+                null, null,
+                mock(SourceExtractor.class), mock(JavadocRunner.class), mock(ZipManager.class),
+                workDirectory, outputDirectory, "", "");
+    }
+
+    DocumentationService createServiceWithRealZipManager() {
+        return new DocumentationService(
+                null, null,
+                mock(SourceExtractor.class), mock(JavadocRunner.class),
+                new ZipManager(outputDirectory),
+                workDirectory, outputDirectory, "", "");
     }
 
     @SuppressWarnings("SameParameterValue")
-    private void invokeExtractSourceZip(DocumentationService service, Path zipFile, String version, Consumer<Double> progressCallback) throws Exception {
-        Method method = DocumentationService.class.getDeclaredMethod("extractSourceZip", Path.class, String.class, Consumer.class);
-        method.setAccessible(true);
-        method.invoke(service, zipFile, version, progressCallback);
+    private boolean invokeExtractSourceZip(SourceExtractor sourceExtractor, Path zipFile, String version, Consumer<Double> progressCallback) throws IOException {
+        return sourceExtractor.extractSourceZip(zipFile, version, progressCallback);
     }
 
     @SuppressWarnings("SameParameterValue")

@@ -85,15 +85,18 @@ class DocumentationServiceIntegrationTest extends IntegrationTest {
     @Test
     @Order(1)
     void generateJdkDocumentation_jdk25_0_3_producesJsonOutput() throws ExecutionException, InterruptedException {
+        Path workDir = Path.of("target/test-jdk-doc-workspace");
+        Path dataDir = Path.of("target/data");
         var service = new DocumentationService(
                 distributionDownloader,
                 jdkVersionRepository,
-                Path.of("target/test-jdk-doc-workspace"),
-                Path.of("target/data"),
-                "java.base",
-                Path.of(System.getProperty("user.dir"), "doclet"),
+                new SourceExtractor(workDir),
+                new JavadocRunner("", 600, Path.of(System.getProperty("user.dir"), "doclet")),
+                new ZipManager(dataDir),
+                workDir,
+                dataDir,
                 "",
-                600
+                "java.base"
         );
         var future = service.generateJdkDocumentation("25.0.3", progressCallback);
         Path result = future.get();
@@ -117,15 +120,18 @@ class DocumentationServiceIntegrationTest extends IntegrationTest {
     void generateJdkDocumentation_downloadsNonRunningVersion_producesJsonOutput() throws ExecutionException, InterruptedException {
         // 21.x is a modular JDK that is not the running JDK (25) → triggers an Adoptium download.
         String version = "21.0.11";
+        Path workDir = Path.of("target/test-jdk-doc-workspace");
+        Path dataDir = Path.of("target/data");
         var service = new DocumentationService(
                 distributionDownloader,
                 jdkVersionRepository,
-                Path.of("target/test-jdk-doc-workspace"),
-                Path.of("target/data"),
-                "java.base",
-                Path.of(System.getProperty("user.dir"), "doclet"),
+                new SourceExtractor(workDir),
+                new JavadocRunner("", 600, Path.of(System.getProperty("user.dir"), "doclet")),
+                new ZipManager(dataDir),
+                workDir,
+                dataDir,
                 "",
-                600
+                "java.base"
         );
         var future = service.generateJdkDocumentation(version, progressCallback);
         Path result = future.get();
