@@ -17,13 +17,16 @@ complexity.
 
 ### Actual Server
 
-| Component | Specification                        |
-|-----------|--------------------------------------|
-| CPU       | 2 x E5 2680 V4                       |
-| RAM       | 2 x 16GB DDR4-2400 ECC               |
-| GPU 1     | NVIDIA RTX 3090 24GB                 |
-| GPU 2     | NVIDIA RTX 3060 12GB                 |
-| VRAM      | 36 GB (layer split across both GPUs) |
+| Component   | Specification                        |
+|-------------|--------------------------------------|
+| Motherboard | Machinist X99 MD8 Dual CPU           |
+| CPU         | 2 x E5 2680 V4                       |
+| RAM         | 2 x 16GB DDR4-2400 ECC               |
+| GPU 1       | NVIDIA RTX 3090 24GB                 |
+| GPU 2       | NVIDIA RTX 3060 12GB                 |
+| VRAM        | 36 GB (layer split across both GPUs) |
+| PSU 1       | MSI 1,000 Watts                      |
+| PSU 2       | MSI 750 Watts                        |
 
 ## AI Software Server
 
