@@ -20,9 +20,9 @@ rendering spec in `blackbook/BLACKBOOK.md`. Unlike the other `jaidoc` commands, 
 
 The provided arguments are: `$ARGUMENTS`
 
-`$ARGUMENTS` is the note to record. It may **optionally** begin with a category token — either an emoji
-(`🔄`, `🏗️`, `📋`, `🐛`, `💡`, `📝`) or a name (`change`, `arch`, `plan`, `bug`, `idea`, `docs`). The rest is the note
-content (a short topic, or a fuller description with details).
+`$ARGUMENTS` is the note to record. It may **optionally** begin with a category token — either an emoji (`🔄`, `🏗️`, `📋`,
+`🐛`, `💡`, `📝`) or a name (`change`, `arch`, `plan`, `bug`, `idea`, `docs`). The rest is the note content (a short topic,
+or a fuller description with details).
 
 - If a category token is present, use it.
 - If it is absent, infer the most fitting category from the content using the emoji taxonomy in `BLACKBOOK.md`
@@ -31,10 +31,10 @@ content (a short topic, or a fuller description with details).
 
 ### Step 0 — Read the spec first
 
-Read `blackbook/BLACKBOOK.md` in full before doing anything else. It is the source of truth for: the emoji →
-category → CSS-class → tab-label mapping, the HTML page skeleton, the Markdown → HTML element mapping, the Mermaid
-rendering rules (escaping + the head `<style>` and body `<script>` blocks), the same-day appending rule, and the
-cross-entry navigation/index rules. **Do not duplicate or guess these — follow what the file says.** If
+Read `blackbook/BLACKBOOK.md` in full before doing anything else. It is the source of truth for: the emoji → category →
+CSS-class → tab-label mapping, the HTML page skeleton, the Markdown → HTML element mapping, the Mermaid rendering rules
+(escaping + the head `<style>` and body `<script>` blocks), the same-day appending rule, and the cross-entry
+navigation/index rules. **Do not duplicate or guess these — follow what the file says.** If
 `BLACKBOOK.md` and these instructions ever disagree, `BLACKBOOK.md` wins.
 
 ### Step 1 — Resolve the date and target files
@@ -43,8 +43,8 @@ cross-entry navigation/index rules. **Do not duplicate or guess these — follow
 2. Using `Glob`/`Read`, check whether `blackbook/YYYY-MM-DD.md` and `blackbook/YYYY-MM-DD.html` already exist.
     - **Both exist** → this is a **same-day append** (Step 3).
     - **Neither exists** → this is a **new day** (Step 4).
-    - If only one of the two exists, treat it as a sync repair: create the missing file and append to the present one
-      so both end up consistent.
+    - If only one of the two exists, treat it as a sync repair: create the missing file and append to the present one so
+      both end up consistent.
 
 ### Step 2 — Compose the entry
 
@@ -54,8 +54,8 @@ cross-entry navigation/index rules. **Do not duplicate or guess these — follow
 - Pick the structure that fits the content: plain paragraphs for a quick thought; bullets for status; tables, fenced
   code blocks, blockquotes (callouts), or a Mermaid diagram for richer entries. Include a Mermaid diagram or visual
   elements (tables, ASCII art, structured layouts) when they genuinely help — when the note has concepts, processes,
-  progress, or relationships that benefit from a visual representation. Don't force one into a note where plain text
-  is clearer; only add a diagram when it actually improves understanding.
+  progress, or relationships that benefit from a visual representation. Don't force one into a note where plain text is
+  clearer; only add a diagram when it actually improves understanding.
 - Keep the title free of the emoji (the emoji lives in the category tab/heading prefix, not the `<h2>`).
 
 ### Step 3 — Same-day append (files already exist)

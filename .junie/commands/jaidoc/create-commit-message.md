@@ -1,6 +1,6 @@
 ---
 allowed-tools: Bash(git diff:*), Bash(git status:*), Bash(git log:*)
-argument-hint: [language: es, en and/or ticket: ABC-123 — both optional, any order]
+argument-hint: [ language: es, en and/or ticket: ABC-123 — both optional, any order ]
 description: Generate a Conventional Commits message based on current git changes
 ---
 
@@ -22,12 +22,11 @@ The provided arguments are: `$ARGUMENTS`
 
 These may contain a **language** and/or a **ticket number**, in any order, and both are optional. Auto-detect each one:
 
-- **Language**: Spanish (`es`/`spanish`) or English (`en`/`english`). These are the only two supported languages. If
-  the user explicitly passes any other language, accept it and honor it, but do not advertise or suggest other
-  languages.
+- **Language**: Spanish (`es`/`spanish`) or English (`en`/`english`). These are the only two supported languages. If the
+  user explicitly passes any other language, accept it and honor it, but do not advertise or suggest other languages.
 - **Ticket**: anything that is not a recognized language token (e.g. `ABC-123`, `1234`, `JIRA-42`, `#987`). There is
-  **no fixed format** — tolerate whatever the user provides. If no ticket-like token is present, simply omit the ticket
-  footer and work normally.
+  **no fixed format** — tolerate whatever the user provides. If no ticket-like token is present, omit the ticket footer
+  and work normally.
 
 If no arguments were provided, default the language to **Spanish** and produce the message with no ticket footer.
 
@@ -72,7 +71,7 @@ The format is:
 1. Analyze the diff (prefer staged changes; fall back to unstaged if nothing is staged).
 2. Determine the most appropriate `type` based on the changes.
 3. Infer a `scope` if the changes are concentrated in a specific module or area.
-4. Write a concise description in imperative mood (**only the subject line** is limited to 72 characters).
+4. Write a concise description in an imperative mood (**only the subject line** is limited to 72 characters).
 5. If the changes are complex, add an explanatory body.
 6. **Do not hard-wrap the body.** Write each body paragraph on a **single physical line** (no manual line breaks inside
    a paragraph). Separate paragraphs with one blank line. This lets the user copy the message without fixing line wraps.
@@ -83,25 +82,25 @@ The format is:
 
 ### Output Format
 
-**CRITICAL**: Return the commit message as **escaped markdown** that will NOT be rendered by Claude Code. The user needs
-to see and copy the raw markdown source.
+**CRITICAL**: Return the commit message as **escaped Markdown** that will NOT be rendered by Claude Code. The user needs
+to see and copy the raw Markdown source.
 
-1. Output the commit message wrapped in a fenced code block, but escape the backticks so the user sees the raw markdown
+1. Output the commit message wrapped in a fenced code block, but escapes the backticks so the user sees the raw Markdown
    including the fence markers.
-2. The user must be able to copy the entire output — including the triple backticks — as a ready-to-paste markdown
+2. The user must be able to copy the entire output — including the triple backticks — as a ready-to-paste Markdown
    snippet.
 3. Keep every body paragraph on one line (see instruction 6) so the copied text needs no reformatting.
 4. **Separate every section with a horizontal rule** — a plain `---` on its own line with a blank line above and below.
    Place it between the commit message block and the git commands block, and between consecutive commits when splitting.
    Do **not** escape it with a backslash and do not put it inside the code fences.
 5. After the message block, **suggest the git commands** needed to create the commit:
-   - A `git add` command listing the relevant files (use `git add .` only if every change belongs to the commit).
-   - The matching `git commit` command that reproduces the message. Use one `-m` per paragraph
-     (subject, body, footer) so the structure is preserved, or a single `-m` when there is no body.
-     Show these commands in their own escaped fenced code block so they are copy-paste ready.
-     This command does **not** execute anything; it only suggests the commands.
+    - A `git add` command listing the relevant files (use `git add .` only if every change belongs to the commit).
+    - The matching `git commit` command that reproduces the message. Use one `-m` per paragraph (subject, body, footer)
+      so the structure is preserved, or a single `-m` when there is nobody. Show these commands in their own escaped
+      fenced code block so they are copy-paste ready. This command does **not** execute anything; it only suggests the
+      commands.
 
-Example of correct output (with a ticket `ABC-123`):
+Example of the correct output (with a ticket `ABC-123`):
 
 `````text
 ```
@@ -127,18 +126,18 @@ git commit -m "feat(auth): add JWT refresh token rotation" -m "Implement automat
 ### Splitting Into Multiple Commits
 
 If multiple changes could justify separate commits, suggest splitting them and provide a message for each one, each in
-its own escaped markdown block. For each suggested commit:
+its own escaped Markdown block. For each suggested commit:
 
 1. Add a short plain-text note before the block explaining the suggested split.
-2. List the specific files that belong to that commit using a bullet list with the label **Files:** (or the
-   equivalent in the chosen language). Group files by their relationship to the commit's purpose.
-3. Then show the commit message in its escaped markdown block.
-4. After each commit message block, suggest the `git add` and `git commit` commands for that specific
-   commit (staging only the files listed for it), in their own escaped code block.
+2. List the specific files that belong to that commit using a bullet list with the label **Files:** (or the equivalent
+   in the chosen language). Group files by their relationship to the commit's purpose.
+3. Then show the commit message in its escaped Markdown block.
+4. After each commit message block, suggest the `git add` and `git commit` commands for that specific commit (staging
+   only the files listed for it), in their own escaped code block.
 5. Separate each commit's block from the next with a `---` horizontal rule.
 6. If a ticket was detected, repeat the same `Refs: <ticket>` footer on every commit.
 
-Example of correct multi-commit output (with a ticket `ABC-123`):
+Example of the correct multi-commit output (with a ticket `ABC-123`):
 
 `````text
 The changes touch authentication logic and documentation separately. I suggest splitting into two commits:

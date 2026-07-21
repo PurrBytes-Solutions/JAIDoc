@@ -1,6 +1,6 @@
 ---
 allowed-tools: Glob, Read, Bash(git diff:*), Bash(git log:*), Bash(git status:*), Bash(git branch:*), Bash(git rev-parse:*), Bash(git merge-base:*)
-argument-hint: [language: es, en | base branch: develop, main, release/x | ticket: ABC-123 — all optional, any order]
+argument-hint: [ language: es, en | base branch: develop, main, release/x | ticket: ABC-123 — all optional, any order ]
 description: Generate a Pull Request title and description (Markdown) from the changes between the current branch and a target branch
 ---
 
@@ -37,8 +37,8 @@ Auto-detect each one:
 - **Template trigger** (optional): the literal token `plantilla` or `template`. If present, also emit the reusable PR
   template (see "Reusable PR template"). Do not treat this token as a branch or ticket.
 
-If no arguments were provided, default the language to **Spanish**, the base branch to **`develop`**, and auto-detect the
-ticket as described above.
+If no arguments were provided, default the language to **Spanish**, the base branch to **`develop`**, and auto-detect
+the ticket as described above.
 
 ### Gathering the changes
 
@@ -46,8 +46,8 @@ A PR diff is **always** the current branch against the resolved base branch — 
 base branch is resolved, gather the changes by running, via the Bash tool:
 
 1. `git log <base>..HEAD --oneline` — the commits unique to this branch (the PR's commit list).
-2. `git diff <base>...HEAD --stat` — the per-file change summary (three-dot range = changes since the merge base, exactly
-   what GitHub shows for a PR).
+2. `git diff <base>...HEAD --stat` — the per-file change summary (three-dot range = changes since the merge base,
+   exactly what GitHub shows for a PR).
 3. `git diff <base>...HEAD` — the full diff, to understand *what* actually changed.
 
 Replace `<base>` with the resolved base branch. If `git log <base>..HEAD` is **empty**, the branch has no commits ahead
@@ -84,7 +84,7 @@ the default sections below.
 ### PR Description (Markdown)
 
 Build the description with the following sections. The headings below are written in English; translate them to the
-output language when needed (e.g. Resumen / Cambios / Cómo probar / Notas / Checklist when the output language is
+output language when needed (e.g., Resumen / Cambios / Cómo probar / Notas / Checklist when the output language is
 Spanish, which is the default):
 
 1. `## Summary` — a short paragraph explaining **what** the PR changes and **why**.
@@ -92,28 +92,28 @@ Spanish, which is the default):
    do not just paste the raw commit log.
 3. `## How to test` — concrete steps to verify the changes locally (build/test commands such as `mvn`/`./mvnw`, and any
    manual steps). Keep it actionable.
-4. `## Notes` — *only if relevant*: breaking changes, migrations, follow-ups, or caveats. Omit the section entirely when
-   there is nothing to add.
+4. `## Notes` — *only if relevant*: breaking changes, migrations, follow-ups, or warnings. Omit the section entirely
+   when there is nothing to add.
 5. `## Checklist` — a short review checklist with **unchecked** items (`- [ ]`), tailored to what the PR actually
    touches and based on the project conventions. Use these as a baseline:
-   - `- [ ] The code follows the project conventions (English, constructor injection, no hardcoded values).`
-   - `- [ ] Tests were added or updated with the correct `@Tag`.`
-   - `- [ ] The documentation under `documentation/` and the `README` are up to date.`
-   - `- [ ] The test suite passes locally.`
-   - `- [ ] No secrets or credentials are included.`
+    - `- [ ] The code follows the project conventions (English, constructor injection, no hardcoded values).`
+    - `- [ ] Tests were added or updated with the correct `@Tag`.`
+    - `- [ ] The documentation under `documentation/` and the `README` are up to date.`
+    - `- [ ] The test suite passes locally.`
+    - `- [ ] No secrets or credentials are included.`
 
-   Drop items that clearly do not apply to the change and add change-specific ones when useful.
+   Drop items that do not apply to the change and add change-specific ones when useful.
 
-**Ticket footer:** if a ticket was detected, add a final line `Refs: <ticket>` at the very end of the description, keeping
-the value exactly as provided/detected. If no ticket was found, do not add the footer.
+**Ticket footer:** if a ticket was detected, add a final line `Refs: <ticket>` at the very end of the description,
+keeping the value exactly as provided/detected. If no ticket was found, do not add the footer.
 
 **Do not hard-wrap paragraphs.** Write each paragraph on a single physical line (no manual line breaks inside a
 paragraph). This lets the user copy the description without fixing line wraps. Bullet lists are fine as multiple lines.
 
 ### Output Format
 
-**CRITICAL**: Return the title and description as **escaped Markdown** that will NOT be rendered by Claude Code. The user
-needs to see and copy the raw Markdown source.
+**CRITICAL**: Return the title and description as **escaped Markdown** that will NOT be rendered by Claude Code. The
+user needs to see and copy the raw Markdown source.
 
 1. Output the **title** in its own escaped fenced code block.
 2. Output the **description** in a second escaped fenced code block, so the user sees the raw Markdown (`##` headings,
@@ -124,10 +124,10 @@ needs to see and copy the raw Markdown source.
 4. After the description, **suggest the `gh pr create` command** (it is only a suggestion — this command executes
    nothing). Because the body is multi-line Markdown, suggest saving the description to a file first and passing it with
    `--body-file`:
-   - Resolve `--base` to the resolved base branch and `--head` to the current branch.
-   - Use `--title` with the generated title.
-   - Use `--body-file <file>` (e.g. `pr-description.md`) and tell the user to paste the description block into that file.
-   Show the command in its own escaped fenced code block so it is copy-paste ready.
+    - Resolve `--base` to the resolved base branch and `--head` to the current branch.
+    - Use `--title` with the generated title.
+    - Use `--body-file <file>` (e.g. `pr-description.md`) and tell the user to paste the description block into that
+      file. Show the command in its own escaped fenced code block so it is copy-paste ready.
 
 Example of correct output (base `develop`, language English, ticket `ABC-123`):
 
@@ -190,13 +190,14 @@ files or imposes a template on its own.
 - **By default**, if no template was found in the repository (see "PR template (check first)"), end your answer with a
   short one-line note (rendered as a Markdown comment/tip, in the output language) telling the user that a reusable
   template can be generated on demand. For example: `> 💡 This repository has no PR template. I can generate a reusable
-  `.github/PULL_REQUEST_TEMPLATE.md` based on this structure — just ask.` Do **not** dump the full template unless asked.
-- **Only when the user explicitly asks** for it (e.g. the arguments include a `plantilla`/`template` token, or they
+  `.github/PULL_REQUEST_TEMPLATE.md` based on this structure — just ask.` Do **not** dump the full template unless
+  asked.
+- **Only when the user explicitly asks** for it (e.g., the arguments include a `plantilla`/`template` token, or they
   request it in a follow-up), output the canonical template below as an **escaped** Markdown block ready to save as
   `.github/PULL_REQUEST_TEMPLATE.md`. Translate the headings and comments to the output language. This is still only a
   suggestion — the user copies and saves it; the command does not write it.
 
-Canonical template to emit on request (English shown; translate to the output language, e.g. Spanish, when needed):
+Canonical template to emit on request (English shown; translate to the output language, e.g., Spanish, when needed):
 
 `````text
 ```
