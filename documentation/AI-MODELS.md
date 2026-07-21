@@ -35,7 +35,6 @@ complexity.
 | 12VHPWR Cable Extension            | https://www.amazon.com/dp/B0C4176N2F?th=1            |
 | PC Power Button                    | https://www.amazon.com/dp/B0F4DK1KBL                 |
 | E-ATX Open Chassis Case Rack       | https://www.amazon.com/dp/B0DDXBRJZ3                 |
-| E-ATX Open Chassis Case Rack       | https://www.amazon.com/dp/B0DDXBRJZ3                 |
 | 120Hz OLED Gaming Portable Monitor | https://es.aliexpress.com/item/1005012583492427.html |
 
 ## AI Software Server
