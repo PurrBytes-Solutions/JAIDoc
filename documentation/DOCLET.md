@@ -15,7 +15,16 @@ The project has two main components:
 
 ## Architecture
 
+The doclet pipeline has two layers: the `doclet/` package handles JSON serialization, and the `service/` layer
+orchestrates the full pipeline (download → extract → run javadoc → compress).
+
 ```
+com.purrbyte.ai.service
+├── DocumentationService      # Orchestrator — selects source, delegates to SourceExtractor / JavadocRunner / ZipManager
+├── SourceExtractor           # Extracts lib/src.zip from distribution archives, resolves modules to document
+├── JavadocRunner             # Builds the javadoc command, executes the process, copies output, handles timeouts
+└── ZipManager                # Compresses version directories to ZIPs, finds version ZIPs on disk
+
 com.purrbyte.ai.doclet
 ├── JsonDoclet          # Main doclet — orchestrates option parsing, element iteration, JSON writing
 ├── TypeJsonBuilder     # Converts javax.lang.model elements into JSON nodes
@@ -135,8 +144,8 @@ output-json/
 
 Each type file contains the full parsed structure: `kind`, names, modifiers, annotations with values, `typeParameters`
 with bounds and descriptions, superclass, interfaces, `permittedSubclasses` (sealed), `recordComponents` (description
-taken from the record's `@param`), `enumConstants`, `fields` (with `constantValue`), `constructors`, `methods` (
-parameters paired with their `@param`, `@throws` paired with exception types, `returnDescription`, `defaultValue` on
+taken from the record's `@param`), `enumConstants`, `fields` (with `constantValue`), `constructors`, `methods`
+(parameters paired with their `@param`, `@throws` paired with exception types, `returnDescription`, `defaultValue` on
 `@interface`, varargs), recursive `nestedTypes`, deprecation (`{since, forRemoval, description}`),`source {file, line}`,
 and the `doc` block with:
 
@@ -321,16 +330,16 @@ and the `doc` block with:
 
 ```json
 "recordComponents": [
-{
-"name": "code",
-"type": "java.lang.String",
-"description": "ISO 4217 code, e.g. \"USD\""
-},
-{
-"name": "decimals",
-"type": "int",
-"description": "number of decimal places"
-}
+  {
+    "name": "code",
+    "type": "java.lang.String",
+    "description": "ISO 4217 code, e.g. \"USD\""
+  },
+  {
+    "name": "decimals",
+    "type": "int",
+    "description": "number of decimal places"
+  }
 ]
 ```
 

@@ -87,8 +87,8 @@ Unique constraint: `(jdk_version_id, chunk_id)`.
 - `JdkVersion` has `@OneToMany` relationships to both `JdkDocElement` and `JdkDocChunk` (with `CascadeType.ALL`, orphan
   removal)
 - `JdkDocElement` has a `@ManyToOne` relationship to `JdkVersion` (required, LAZY)
-- `JdkDocChunk` has a `@ManyToOne` relationship to `JdkVersion` (required, LAZY) and optionally to `JdkDocElement` (
-  LAZY)
+- `JdkDocChunk` has a `@ManyToOne` relationship to `JdkVersion` (required, LAZY) and optionally to `JdkDocElement`
+  (LAZY)
 - All entities use `@GeneratedValue(strategy = GenerationType.UUID)` for UUID primary keys
 
 ## Hibernate Search Mapping

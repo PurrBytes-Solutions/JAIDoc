@@ -89,10 +89,13 @@ JAIDoc/
     │   │   │   ├── JdkDocElementRepository.java    # Element persistence
     │   │   │   └── JdkVersionRepository.java       # Version metadata persistence
     │   │   ├── service/             # Application services
-    │   │   │   ├── DocumentationService.java       # JDK source → JSON pipeline (download, extract, javadoc)
+    │   │   │   ├── DocumentationService.java       # Orchestrates JDK source → JSON pipeline (delegates to SourceExtractor, JavadocRunner, ZipManager)
     │   │   │   ├── EmbeddingService.java           # Transformer embedding wrapper (e5 prefixes)
     │   │   │   ├── IngestDiscoveryService.java     # Auto-discovers and ingests JDK versions on startup
     │   │   │   ├── IngestionService.java           # Async ingestion of JSON Javadoc into the database
+    │   │   │   ├── JavadocRunner.java              # Runs javadoc with JsonDoclet, handles process lifecycle
+    │   │   │   ├── SourceExtractor.java            # Extracts source archives and resolves modules to document
+    │   │   │   ├── ZipManager.java                 # Compresses version dirs to ZIPs and finds version ZIPs
     │   │   │   └── JdkSearchService.java           # Vector kNN search filtered by version
     │   │   └── util/                # Shared utilities
     │   │       ├── SpringBootArtifactDownloader.java  # Downloads Spring Boot artifacts from Maven Central
@@ -136,7 +139,8 @@ JAIDoc/
 1. **actuator-configuration.yml** — Actuator endpoints, health, loggers, env, configprops
 2. **ai-configuration.yml** — ONNX transformer model and tokenizer URIs for embeddings
 3. **db-configuration.yml** — SQLite datasource, Hibernate dialect, ddl-auto
-4. **documentation-configuration.yml** — JDK source download directory, doclet work/output directories
+4. **documentation-configuration.yml** — JDK source download directory, doclet work/output directories, Javadoc timeout,
+   doclet JAR path, module filter
 5. **ingest-configuration.yml** — Ingest auto-discovery configuration
 6. **logging-configuration.yml** — Logback rolling policy, log file path
 7. **mcp-configuration.yml** — Spring AI MCP server (name, streamable protocol)
@@ -251,9 +255,9 @@ The doclet jar is used by `javadoc -docletpath` to generate JSON documentation v
 
 ### Architecture Note
 
-The project has **no HTTP API endpoints** — no `@RestController`, no REST controllers. All external
-interaction is via **MCP tools** exposed through the Spring AI MCP Server (streamable protocol).
-The two tool classes (`JavaDocMCP`, `SpringBootMCP`) are auto-discovered by `MethodToolCallbackProvider`
+The project has **no HTTP API endpoints** — no `@RestController`, no REST controllers. All external interaction is via
+**MCP tools** exposed through the Spring AI MCP Server (streamable protocol). The two tool classes (`JavaDocMCP`,
+`SpringBootMCP`) are auto-discovered by `MethodToolCallbackProvider`
 and registered with the MCP server at startup.
 
 ### Dependency Management

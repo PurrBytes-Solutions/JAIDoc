@@ -89,8 +89,8 @@ independently. Tag constants are defined in `BaseTest`:
 
 - **`BaseTest.TAG_UNIT`** — run with `mvn test -Dgroups=UNIT` or `<groups>UNIT</groups>` in surefire
 - **`BaseTest.TAG_INTEGRATION`** — run with `mvn test -Dgroups=INTEGRATION` or `<groups>INTEGRATION</groups>`.
-  Integration tests are skipped unless the property `test.integration.enabled=true` is set
-  (via environment variable, system property, or `application-test.yaml`).
+  Integration tests are skipped unless the property `test.integration.enabled=true` is set (via environment variable,
+  system property, or `application-test.yaml`).
 
 Concrete unit test classes reference `BaseTest.TAG_UNIT`; integration test classes reference `BaseTest.TAG_INTEGRATION`.
 This prevents integration tests from breaking the CI when Spring context startup fails.
@@ -167,9 +167,8 @@ No need to import JUnit's `org.junit.Assert` or any other assertion library — 
 
 ### `@Order` — ordered test methods
 
-Test methods can be ordered with `@Order(n)` where `n` is an integer. The `@TestMethodOrder` on `BaseTest` ensures
-order is respected. This is used when test methods have dependencies (e.g., a setup test must run before a verification
-test):
+Test methods can be ordered with `@Order(n)` where `n` is an integer. The `@TestMethodOrder` on `BaseTest` ensures order
+is respected. This is used when test methods have dependencies (e.g., a setup test must run before a verification test):
 
 ```java
 
@@ -241,9 +240,9 @@ and `-Dtest.integration.enabled=true`.
 
 `DocumentationServiceIntegrationTest` runs the full Javadoc generation pipeline — obtain a complete `lib/src.zip`, run
 Javadoc with the JsonDoclet in module mode, and verify the JSON output (`index.json` plus the `api/` directory), scoped
-to `java.base`. The first test documents the running JDK from its local `lib/src.zip` (no network). The second
-downloads a non-running version's distribution from Adoptium and documents it (needs network and downloads a full JDK).
-Both are disabled by default via the `INTEGRATION` tag and `-Dtest.integration.enabled=true`.
+to `java.base`. The first test documents the running JDK from its local `lib/src.zip` (no network). The second downloads
+a non-running version's distribution from Adoptium and documents it (needs network and downloads a full JDK). Both are
+disabled by default via the `INTEGRATION` tag and `-Dtest.integration.enabled=true`.
 
 ### Ingest + search pipeline integration
 

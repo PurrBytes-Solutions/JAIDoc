@@ -18,9 +18,8 @@ A copy of the JDK source distribution is kept in `data/jdk/` for local testing:
 | `data/jdk/25.0.3.zip`  | JDK 25.0.3 source distribution (ZIP) — input to the doclet pipeline  |
 | `data/jdk/21.0.11.zip` | JDK 21.0.11 source distribution (ZIP) — input to the doclet pipeline |
 
-This ZIP is the raw material. The `DocumentationService` downloads it automatically via the JDK distribution
-downloader (see [JDK-DISTRIBUTION.md](JDK-DISTRIBUTION.md)), but keeping a local copy avoids repeated downloads during
-testing.
+This ZIP is the raw material. The `DocumentationService` downloads it automatically via the JDK distribution downloader
+(see [JDK-DISTRIBUTION.md](JDK-DISTRIBUTION.md)), but keeping a local copy avoids repeated downloads during testing.
 
 ## Output: JSON Javadoc
 
@@ -50,18 +49,23 @@ queryable database. The ZIP file is created under `data/jdk/` with a version-pre
 ## Pipeline Flow
 
 ```
-JDK source ZIP → JsonDoclet → JSON Javadoc → Compress ZIP → DB ingestion → Hibernate Search kNN index → MCP tools (queryable)
+JDK distribution ZIP → Extract lib/src.zip → Expand source tree → javadoc + JsonDoclet → JSON Javadoc → Compress ZIP → DB ingestion → Hibernate Search kNN index → MCP tools (queryable)
 ```
 
-1. **Ingest** — Extract the JDK source from the ZIP (or download it automatically).
-2. **Serialize** — Run `JsonDoclet` on the JDK source to produce structured JSON, extracting class signatures, method
-   descriptions, parameters, return types, and annotations.
-3. **Chunk** — Split the serialized JSON into semantic chunks via `ChunkWriter`.
-4. **Compress** — The version directory is compressed into a ZIP with a version-prefixed directory structure under
+1. **Obtain source** — Locate a complete `lib/src.zip`: use the running JDK's own when the version matches, otherwise
+   download the Adoptium distribution and extract its `lib/src.zip` via `SourceExtractor`.
+2. **Expand** — Extract `lib/src.zip` into a working directory (e.g., `<work>/jdk-sources/<version>/`). The expansion is
+   idempotent — an already-extracted directory is reused.
+3. **Resolve modules** — Use the configured module list (`doclet.modules`), or auto-discover every module containing a
+   `module-info.java`.
+4. **Serialize** — Run `javadoc` with `JsonDoclet` on the resolved modules to produce structured JSON, extracting class
+   signatures, method descriptions, parameters, return types, and annotations.
+5. **Chunk** — Split the serialized JSON into semantic chunks via `ChunkWriter`.
+6. **Compress** — The version directory is compressed into a ZIP with a version-prefixed directory structure under
    `data/jdk/` (e.g., `25.0.3/index.json`).
-5. **Embed** — Generate vector embeddings for each chunk using the ONNX transformer model (
-   see [AI-MODELS.md](AI-MODELS.md)).
-6. **Persist** — Store chunks and elements in SQLite via JPA entities (`JdkDocChunk`, `JdkDocElement`), with vector
+7. **Embed** — Generate vector embeddings for each chunk using the ONNX transformer model
+   (see [AI-MODELS.md](AI-MODELS.md)).
+8. **Persist** — Store chunks and elements in SQLite via JPA entities (`JdkDocChunk`, `JdkDocElement`), with vector
    embeddings indexed by Hibernate Search kNN.
 
 Steps 5–6 are fully implemented. `IngestionService.ingestAsync()` uses virtual threads to process each chunk (embedding

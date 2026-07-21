@@ -19,8 +19,8 @@ with `@Tool` methods and registers them — no additional registration is needed
 
 ### Session Management
 
-The server runs in **streamable** mode: it maintains a session with the client using the `Mcp-Session-Id` header.
-The typical workflow is:
+The server runs in **streamable** mode: it maintains a session with the client using the `Mcp-Session-Id` header. The
+typical workflow is:
 
 1. **Initialize** — send an `initialize` JSON-RPC request to establish a session. The server responds with an
    `Mcp-Session-Id` header.
@@ -28,8 +28,7 @@ The typical workflow is:
 3. **Session lifetime** — the server may close idle sessions automatically. Re-initialize if the session expires.
 
 When testing with IntelliJ's HTTP client, capture the `Mcp-Session-Id` from the `initialize` response and reuse it via
-environment variables.
-See `request/mcp-tools.http` for a complete working example.
+environment variables. See `request/mcp-tools.http` for a complete working example.
 
 ### MCP Domains
 
@@ -225,6 +224,5 @@ Resources allow the AI model to read structured data from the IDE:
 | Run configurations   | List of project run configurations                    | `project://run-configs`                                                         |
 | Debugger status      | Current debugger session state                        | `debugger://status`                                                             |
 
-**Note:** This MCP server does not expose prompts or logging endpoints.
-Prompts and skills (like `code-review`, `security-review`) are **Claude Code skills**,
-not MCP resources — they run inside Claude Code, not on the MCP server.
+**Note:** This MCP server does not expose prompts or logging endpoints. Prompts and skills (like `code-review`,
+`security-review`) are **Claude Code skills**, not MCP resources — they run inside Claude Code, not on the MCP server.
