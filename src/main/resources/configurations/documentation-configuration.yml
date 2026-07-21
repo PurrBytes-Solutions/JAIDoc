@@ -3,6 +3,11 @@ jdk:
     download:
       # Directory where downloaded JDK distributions (for documenting non-running versions) are cached.
       directory: ${JDK_DIST_DOWNLOAD_DIR:./jdk-distributions}
+    api:
+      # Page size for Adoptium API requests.
+      page.size: ${ADOPTIUM_PAGE_SIZE:50}
+      # Maximum number of pages to fetch from Adoptium API.
+      max.pages: ${ADOPTIUM_MAX_PAGES:6}
 
 data:
   # Unified directory for both doclet output and ingest discovery.
@@ -22,6 +27,11 @@ doclet:
     timeout: ${DOCLET_JAVADOC_TIMEOUT:600}
   # Comma-separated JDK modules to document. Empty = all modules found in the JDK's lib/src.zip.
   modules: ${DOCLET_MODULES:}
+
+maven:
+  # Base URL for Maven Central metadata and repository. Override for mirrors or proxies.
+  metadata.url: ${MAVEN_METADATA_URL:https://repo1.maven.org/maven2/org/springframework/boot/spring-boot/maven-metadata.xml}
+  repo.base: ${MAVEN_REPO_BASE:https://repo1.maven.org/maven2/org/springframework/boot/spring-boot}
 
 spring:
   boot:
