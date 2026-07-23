@@ -192,3 +192,14 @@ considerably less time.
 
 > **Historical note:** Ingestion of JDK 25.0.3 with the INT8 model took 167m34s (10,054,485ms) for 93,196 chunks — too
 > slow to be practical. The FP16 model on CPU provides a meaningful speedup over that baseline.
+
+## Linux GPU Dependencies
+
+If running on Linux with a GPU (CUDA), the following libraries must be installed for ONNX Runtime to use CUDA execution providers:
+
+```bash
+# Ubuntu / Debian
+sudo apt install -y libcublas12 libnvrtc12 libcudart12
+```
+
+These provide the CUDA runtime (cuBLAS, NVRTC, cuDART) required by the ONNX Runtime CUDA provider. Without them, Spring AI falls back to CPU inference even when a GPU is present.
