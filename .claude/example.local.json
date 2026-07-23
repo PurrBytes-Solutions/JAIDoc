@@ -1,0 +1,35 @@
+{
+  "env": {
+    "CLAUDE_CODE_ATTRIBUTION_HEADER": "0",
+    "ANTHROPIC_AUTH_TOKEN": "llama",
+    "ANTHROPIC_BASE_URL": "http://fmc-ai.local:8090",
+    "CLAUDE_CODE_EFFORT_LEVEL": "xhigh",
+    "ANTHROPIC_DEFAULT_FABLE_MODEL": "unsloth-Ornith-1.0-35B",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "unsloth-Ornith-1.0-35B",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "unsloth-Ornith-1.0-35B",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "unsloth-Ornith-1.0-35B"
+  },
+  "permissions": {
+    "allow": [
+      "mcp__idea__*",
+      "mcp__JetBrains__*",
+      "mcp__vaadin__*",
+      "WebSearch",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(./mvnw test *)",
+      "Bash(mvn compile *)",
+      "WebFetch(domain:huggingface.co)",
+      "WebFetch(domain:central.sonatype.com)",
+      "WebFetch(domain:search.maven.org)"
+    ]
+  },
+  "enabledMcpjsonServers": [
+    "JetBrains"
+  ],
+  "enabledPlugins": {
+    "frontend-design@claude-plugins-official": true,
+    "mcp-server-dev": true,
+    "skill-creator": true
+  }
+}
