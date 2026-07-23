@@ -27,6 +27,8 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
@@ -67,8 +69,19 @@ public class IngestionService {
         Optional<JdkVersion> optionalJdkVersion = jdkVersionRepository.findByVersion(version);
         JdkVersion jdkVersion = optionalJdkVersion.orElse(null);
         if (jdkVersion != null) {
-            log.info("Version {} already exists, returning existing version (status={})", version, jdkVersion.getStatus());
-            return jdkVersion;
+            IngestStatus status = jdkVersion.getStatus();
+            if (status == IngestStatus.READY) {
+                log.info("Version {} already ingested (status=READY), returning existing version", version);
+                return jdkVersion;
+            }
+            if (status == IngestStatus.INGESTING) {
+                log.info("Version {} already being ingested (status=INGESTING), skipping duplicate request", version);
+                return jdkVersion;
+            }
+            // Re-ingestion: status is FAILED or other non-READY state.
+            log.info("Version {} found with status={}, triggering re-ingestion", version, status);
+        } else {
+            log.info("Version {} not found in database, creating new entry", version);
         }
         try (ZipFile zipFile = new ZipFile(zipPath.toFile())) {
             long t0 = System.currentTimeMillis();
@@ -220,6 +233,10 @@ public class IngestionService {
             log.info("[{}/chunks] No chunks.jsonl found in ZIP", jdkVersion.getVersion());
             return;
         }
+        Map<String, JdkDocElement> elementById = new HashMap<>();
+        jdkDocElementRepository.findByJdkVersion(jdkVersion).forEach(e ->
+                elementById.put(e.getQualifiedId(), e));
+        log.info("[{}/chunks] Preloaded {} elements for lookup", jdkVersion.getVersion(), elementById.size());
         int count = 0;
         int skipped = 0;
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(zipFile.getInputStream(chunksEntry), StandardCharsets.UTF_8))) {
@@ -257,7 +274,13 @@ public class IngestionService {
                         .parts(meta.path("parts").asInt())
                         .parentChunkId(str(meta, "parentId"))
                         .build();
-                jdkDocElementRepository.findByJdkVersionAndQualifiedId(jdkVersion, ownerId).ifPresent(jdkDocChunk::setJDKDocElement);
+                JdkDocElement elem = elementById.get(ownerId);
+                if (elem != null) {
+                    jdkDocChunk.setJDKDocElement(elem);
+                } else {
+                    jdkDocElementRepository.findByJdkVersionAndQualifiedId(jdkVersion, ownerId)
+                            .ifPresent(jdkDocChunk::setJDKDocElement);
+                }
                 jdkDocChunkRepository.save(jdkDocChunk);
                 if (count % BATCH_SIZE == 0) {
                     jdkDocChunkRepository.flush();

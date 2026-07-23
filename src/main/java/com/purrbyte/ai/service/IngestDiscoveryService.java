@@ -93,7 +93,14 @@ public class IngestDiscoveryService {
                     log.info("Version {} already ingested (status=READY), skipping", version);
                     return;
                 }
-                log.info("Version {} found with status={}, triggering re-ingestion", version, status);
+                if (status == IngestStatus.INGESTING) {
+                    log.info("Version {} already being ingested, skipping duplicate discovery", version);
+                    return;
+                }
+                // Mark as INGESTING to prevent concurrent ingestion while waiting for @Transactional ingest()
+                existing.get().setStatus(IngestStatus.INGESTING);
+                jdkVersionRepository.save(existing.get());
+                log.info("Version {} marked as INGESTING, triggering ingestion", version);
             } else {
                 log.info("Version {} not found in database, triggering ingestion", version);
             }
