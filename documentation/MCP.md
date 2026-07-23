@@ -108,8 +108,8 @@ This bypasses the stdio-to-HTTP adapter and connects directly to the JetBrains M
 ### Changing the JetBrains MCP Server Port
 
 By default, the JetBrains MCP server runs on port `64342` (or the next available port above it). If you need a fixed
-port due to network conflicts or requirements from your AI client, you must edit IntelliJ's configuration file
-manually while the IDE is completely closed.
+port due to network conflicts or requirements from your AI client, you must edit IntelliJ's configuration file manually
+while the IDE is completely closed.
 
 1. **Close IntelliJ IDEA completely.**
 2. Locate the `options` folder for your IntelliJ version:
@@ -129,8 +129,8 @@ manually while the IDE is completely closed.
     * **Windows (PowerShell)**: `netstat -ano | findstr 64344`
     * **macOS / Linux**: `lsof -i :64344`
 
-   A line showing the `LISTEN` state confirms the MCP server moved to the new port. Update `.mcp.json` with the new
-   port accordingly.
+   A line showing the `LISTEN` state confirms the MCP server moved to the new port. Update `.mcp.json` with the new port
+   accordingly.
 
 ### JetBrains Tools
 
