@@ -14,7 +14,6 @@ import java.math.RoundingMode;
  * percentage against the module label to display stage-specific progress (e.g. "download: 45%").
  */
 @Getter
-@Setter
 public class Progress {
 
     /**

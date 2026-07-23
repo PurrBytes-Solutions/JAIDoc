@@ -10,7 +10,6 @@ import java.math.RoundingMode;
  * Progress update for the JDK ingestion pipeline.
  */
 @Getter
-@Setter
 public class IngestProgress {
 
     /**

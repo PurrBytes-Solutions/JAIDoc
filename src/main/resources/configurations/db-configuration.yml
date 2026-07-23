@@ -5,6 +5,10 @@ spring:
         cachePrepStmts: true
         prepStmtCacheSize: 500
         prepStmtCacheSqlLimit: 2048
+      max-lifetime: 60000
+      connection-timeout: 60000
+      maximum-pool-size: 4
+      minimum-idle: 1
     url: jdbc:sqlite:./jaidoc.sqlite
     driver-class-name: org.sqlite.JDBC
     username: ${DB_USERNAME:jaidoc}
