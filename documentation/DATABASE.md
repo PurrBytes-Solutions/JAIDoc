@@ -41,7 +41,7 @@ JdkVersion (jdk_version)            1 ──< JdkDocElement (jdk_doc_element)   
 | `member`         | TEXT       | Member name (if it's a type member)               |
 | `signature`      | TEXT       | Member signature                                  |
 | `since`          | TEXT       | Since annotation                                  |
-| `deprecated`     | BOOLEAN    | Whether deprecated                                |
+| `deprecated`     | BOOLEAN    | Whether deprecated (`@GenericField boolean`)      |
 | `sourceFile`     | TEXT       | Source file name                                  |
 | `sourceLine`     | INTEGER    | Source line number                                |
 | `part`           | INTEGER    | Chunk part index within parent element            |
@@ -138,7 +138,9 @@ Ingestion is an explicit step (fully implemented):
    `data/` directory when `ingest.enabled=true`.
 3. **Async ingestion** (on demand): `IngestionService.ingestAsync(jdkVersion, jdkDistribution)` processes each chunk
    (embedding generation + JPA persistence) using virtual threads. Progress is tracked via `IngestProgress` DTOs (with
-   phases `INGESTING`, `READY`, `FAILED`) and reported through `TaskInfo`.
+   phases `MODULE_MANIFEST`, `MODULE_ELEMENTS`, `MODULE_CHUNKS`), while the JDK version's lifecycle state is stored in
+   `IngestStatus` (`INGESTING`, `READY`, `FAILED`) and the async task status in `TaskStatus` (`PENDING`, `RUNNING`,
+   `COMPLETED`, `FAILED`).
 4. **MCP tools**: `startIngest` and `getIngestProgress` allow triggering and polling ingestion from the MCP server.
 
 The process:
@@ -148,7 +150,8 @@ The process:
 - Loads structural JSON → `JdkDocElement`
 - Reads `chunks.jsonl`, embeds and persists → `JdkDocChunk`
 
-The `IngestStatus` enum tracks the lifecycle state (`INGESTING`, `READY`, `FAILED`).
+The `IngestStatus` enum tracks the JDK version lifecycle (`INGESTING`, `READY`, `FAILED`). The `TaskStatus` enum tracks
+the async task lifecycle (`PENDING`, `RUNNING`, `COMPLETED`, `FAILED`).
 
 ## Search
 

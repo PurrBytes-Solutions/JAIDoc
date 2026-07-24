@@ -69,7 +69,8 @@ JDK distribution ZIP → Extract lib/src.zip → Expand source tree → javadoc 
    embeddings indexed by Hibernate Search kNN.
 
 Steps 5–6 are fully implemented. `IngestionService.ingestAsync()` uses virtual threads to process each chunk (embedding
-generation + JPA persistence), tracking progress via `IngestProgress` DTOs and reporting status via `TaskInfo`.
+generation + JPA persistence), tracking progress via `IngestProgress` DTOs (phases: `MODULE_MANIFEST`,
+`MODULE_ELEMENTS`, `MODULE_CHUNKS`) and reporting status via `TaskInfo`.
 
 ## Versioned Data
 

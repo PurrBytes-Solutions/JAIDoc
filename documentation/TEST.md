@@ -8,8 +8,7 @@ BaseTest (abstract)
 ├── @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 ├── @ExtendWith(TimeExtension.class)
 ├── @ActiveProfiles({"test"})
-├── @Tag(BaseTest.TAG_UNIT)
-└── @Tag(BaseTest.TAG_INTEGRATION)
+└── defines TAG_UNIT / TAG_INTEGRATION constants (no @Tag on BaseTest itself)
 
 UnitTest extends BaseTest (abstract)
 ├── static final JsonMapper jsonMapper — built via static factory method `createJsonMapper()` using ObjectMapperConfiguration.customizer
@@ -25,27 +24,25 @@ IntegrationTest extends BaseTest (abstract)
 
 ## Test base class annotations
 
-| Annotation                                              | Purpose                                                                         |
-|---------------------------------------------------------|---------------------------------------------------------------------------------|
-| `@Slf4j`                                                | Lombok logger in all test classes                                               |
-| `@TestMethodOrder(MethodOrderer.OrderAnnotation.class)` | Respect `@Order` on test methods                                                |
-| `@ExtendWith(TimeExtension.class)`                      | Measure test execution time — logs after each test method                       |
-| `@ActiveProfiles({"test"})`                             | Use the `test` Spring profile                                                   |
-| `@Tag(BaseTest.TAG_UNIT)`                               | **On `BaseTest`** — applies to unit test hierarchy                              |
-| `@Tag(BaseTest.TAG_INTEGRATION)`                        | **On `BaseTest` and `IntegrationTest`** — applies to integration test hierarchy |
-| `@SpringBootTest`                                       | **Only on `IntegrationTest`** — starts full context                             |
-| `@EnabledIf("${test.integration.enabled:false}")`       | **Only on `IntegrationTest`** — runs only when enabled                          |
+| Annotation                                              | Purpose                                                                      |
+|---------------------------------------------------------|------------------------------------------------------------------------------|
+| `@Slf4j`                                                | Lombok logger in all test classes                                            |
+| `@TestMethodOrder(MethodOrderer.OrderAnnotation.class)` | Respect `@Order` on test methods                                             |
+| `@ExtendWith(TimeExtension.class)`                      | Measure test execution time — logs after each test method                    |
+| `@ActiveProfiles({"test"})`                             | Use the `test` Spring profile                                                |
+| `@Tag(BaseTest.TAG_UNIT)`                               | **Only on concrete `UnitTest` subclasses** — applied at the test class level |
+| `@Tag(BaseTest.TAG_INTEGRATION)`                        | **On `IntegrationTest`** — applies to integration test hierarchy             |
+| `@SpringBootTest`                                       | **Only on `IntegrationTest`** — starts full context                          |
+| `@EnabledIf("${test.integration.enabled:false}")`       | **Only on `IntegrationTest`** — runs only when enabled                       |
 
 ## Test class annotation rules
 
-- **`BaseTest`** carries both `@Tag` annotations (UNIT and INTEGRATION). This means `UnitTest` inherits UNIT and
-  `IntegrationTest` inherits INTEGRATION automatically.
+- **`BaseTest`** defines the tag constants (`TAG_UNIT`, `TAG_INTEGRATION`) but does **not** carry `@Tag` annotations
+  itself. Tags are applied on concrete test classes.
 - **`IntegrationTest`** adds `@SpringBootTest`, `@EnabledIf("${test.integration.enabled:false}")`, and
   `@Tag(BaseTest.TAG_INTEGRATION)` — it runs only when `test.integration.enabled=true`.
 - **`UnitTest`** does NOT have `@SpringBootTest` — it builds `JsonMapper` via a static factory method. No Spring
-  context.
-- **`BaseTest`** also has `@Tag(BaseTest.TAG_INTEGRATION)` (not just on `IntegrationTest`) — this means
-  `IntegrationTest` inherits both its own tag and the one from `BaseTest`.
+  context. Concrete unit test classes apply `@Tag(BaseTest.TAG_UNIT)` directly.
 - **`@Order`** on test methods respects the `@TestMethodOrder` set on `BaseTest`. Test methods can be ordered with
   `@Order(1)`, `@Order(2)`, etc.
 - **`@TestInstance(PER_CLASS)`** is NOT used — all tests use the default `PER_METHOD` test instance strategy.

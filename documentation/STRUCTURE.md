@@ -67,7 +67,7 @@ JAIDoc/
     │   │   │   ├── JsonDoclet.java             # Main doclet entry point
     │   │   │   └── TypeJsonBuilder.java        # Type-level JSON assembly
     │   │   ├── domain/              # JPA entities
-    │   │   │   ├── JdkVersion.java             # JDK version metadata (version, Adoptium tag, distribution)
+    │   │   │   ├── JdkVersion.java             # JDK version metadata (version, counts, ingestion status)
     │   │   │   ├── JdkDocChunk.java            # Chunked Javadoc with vector embedding (kNN search)
     │   │   │   └── JdkDocElement.java          # Structured Javadoc element (class/method/field)
     │   │   ├── mcp/                 # MCP tool objects

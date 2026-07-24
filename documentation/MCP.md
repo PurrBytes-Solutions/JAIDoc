@@ -74,8 +74,8 @@ public class SpringBootMCP {
 | `getIngestProgress`        | Poll the status of an ingest task                          | `taskId` (string) — async task ID from `startIngest`                                                       |
 
 **Note**: `startDocGeneration` and `startIngest` return a `String` task ID. `getDocGenerationProgress` and
-`getIngestProgress` return `TaskInfo` objects containing `taskId`, `status` (`PENDING` / `RUNNING` / `COMPLETED` /
-`FAILED`), `progress`, and `message`.
+`getIngestProgress` return `TaskInfo` objects containing `taskId`, `version`, `status` (`PENDING` / `RUNNING` /
+`COMPLETED` / `FAILED`), `progress`, `module`, and `result`.
 
 #### Spring Boot Tools
 
