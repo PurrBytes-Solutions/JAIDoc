@@ -91,6 +91,11 @@ public class DocumentationService {
                     try {
                         int requestedMajor = JdkDistributionDownloader.extractMajorVersion(version);
                         validateRequest(version, requestedMajor);
+                        Path versionZip = outputDirectory.resolve("jdk").resolve(version + ".zip");
+                        if (Files.exists(versionZip)) {
+                            log.info("ZIP already exists at {}, skipping generation", versionZip);
+                            return outputDirectory.resolve("jdk").resolve(version);
+                        }
                         Consumer<Double> extractCallback = p -> {
                             if (progressCallback != null) {
                                 progressCallback.accept(Progress.of(p, Progress.MODULE_EXTRACT));

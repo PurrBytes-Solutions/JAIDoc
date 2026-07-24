@@ -245,9 +245,9 @@ class DocumentationServiceTest extends UnitTest {
             }
             ZipManager zipManager = new ZipManager(outputDirectory);
             invokeZipVersion(zipManager, jdkDir, "25.0.3");
-            // ZIP should still exist and original directory should still exist
+            // ZIP should exist and original directory should be cleaned up (defense in depth)
             assertThat(zipPath).exists();
-            assertThat(Files.exists(jdkDir)).isTrue();
+            assertThat(Files.exists(jdkDir)).isFalse();
         }
 
         private void invokeZipVersion(ZipManager zipManager, Path versionDir, String version) throws IOException {

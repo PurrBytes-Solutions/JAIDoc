@@ -37,7 +37,8 @@ public class ZipManager {
     public void zipVersion(Path versionDir, String version) throws IOException {
         Path zipPath = versionDir.getParent().resolve(version + ".zip");
         if (Files.exists(zipPath)) {
-            log.info("ZIP already exists at {}, skipping compression", zipPath);
+            log.info("ZIP already exists at {}, cleaning up directory", zipPath);
+            deleteDirectory(versionDir);
             return;
         }
         log.info("Compressing {} into {}", versionDir, zipPath);
@@ -96,6 +97,23 @@ public class ZipManager {
         } catch (IOException e) {
             log.warn("Failed to list JDK directory {}: {}", jdkDir, e.getMessage());
             return null;
+        }
+    }
+
+    /**
+     * Deletes a directory and all its contents recursively.
+     */
+    private void deleteDirectory(Path dir) throws IOException {
+        if (!Files.exists(dir)) return;
+        try (var walk = Files.walk(dir)) {
+            walk.sorted(Comparator.reverseOrder())
+                    .forEach(p -> {
+                        try {
+                            Files.delete(p);
+                        } catch (IOException e) {
+                            log.warn("Failed to delete {}: {}", p, e.getMessage());
+                        }
+                    });
         }
     }
 
