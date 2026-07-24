@@ -111,5 +111,3 @@ The project is developed using multiple AI coding agents, each with different st
 | Claude Code           | Terminal       | Primary agent — deep research, complex refactors, and architectural decisions |
 | IntelliJ AI Assistant | IntelliJ IDEA  | Inline code completion, quick suggestions, and minor fixes within the editor  |
 | Junie                 | Terminal       | Alternative agent for comparison — experimental use and secondary opinions    |
-
-
