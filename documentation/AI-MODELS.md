@@ -44,7 +44,7 @@ complexity. Is compiled in Linux Debian Forky with CPU, CUDA and VULKAN
 
 | Component | Technology       | Version | Date       |
 |-----------|------------------|---------|------------|
-| Server    | llama.cpp Server | b10069  | 2026-07-20 |
+| Server    | llama.cpp Server | b10099  | 2026-07-23 |
 
 ## Models
 
