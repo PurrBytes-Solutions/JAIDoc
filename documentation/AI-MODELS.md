@@ -4,6 +4,15 @@ JAIDoc is designed to work entirely with **local AI models** — no cloud APIs r
 tested against the Llama.cpp Server in routing mode, which dynamically selects the best model for each query based on
 complexity.
 
+## AI Software Server
+
+JAIDoc uses **llama.cpp Server** in routing mode to dynamically select the best model for each query based on
+complexity. Is compiled in Linux Debian Forky with CPU, CUDA and VULKAN
+
+| Component | Technology       | Version | Date       |
+|-----------|------------------|---------|------------|
+| Server    | llama.cpp Server | b10107  | 2026-07-24 |
+
 ## Hardware
 
 ### Old Server
@@ -74,15 +83,6 @@ ggml_vulkan: 1 = NVIDIA GeForce RTX 3090 (NVIDIA) | uma: 0 | fp16: 1 | bf16: 1 |
 | PC Power Button                    | https://www.amazon.com/dp/B0F4DK1KBL                 |
 | E-ATX Open Chassis Case Rack       | https://www.amazon.com/dp/B0DDXBRJZ3                 |
 | 120Hz OLED Gaming Portable Monitor | https://es.aliexpress.com/item/1005012583492427.html |
-
-## AI Software Server
-
-JAIDoc uses **llama.cpp Server** in routing mode to dynamically select the best model for each query based on
-complexity. Is compiled in Linux Debian Forky with CPU, CUDA and VULKAN
-
-| Component | Technology       | Version | Date       |
-|-----------|------------------|---------|------------|
-| Server    | llama.cpp Server | b10099  | 2026-07-23 |
 
 ## Models
 
