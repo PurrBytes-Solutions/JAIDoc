@@ -14,6 +14,12 @@
 #   - You can also select a request and press Ctrl+Alt+Shift+Enter.
 # =============================================================================
 
+# =============================================================================
+# Variables — update versions here to affect all requests
+# =============================================================================
+@jdkVersion25 = 25.0.3
+@jdkVersion17 = 17.0.19
+
 ### Initialize MCP Session
 POST {{serverMCPUrl}}
 Accept: {{accept}}
@@ -69,7 +75,7 @@ Mcp-Session-Id: {{mcpSessionId}}
   }
 }
 
-### Search JDK Javadoc — semantic search
+### Search JDK Javadoc — semantic search - JDK 25
 POST {{serverMCPUrl}}
 Accept: {{accept}}
 Content-Type: {{contentType}}
@@ -82,14 +88,14 @@ Mcp-Session-Id: {{mcpSessionId}}
   "params": {
     "name": "searchJavadoc",
     "arguments": {
-      "version": "25.0.3",
+      "version": "{{jdkVersion25}}",
       "query": "how to create a new thread",
       "topK": 5
     }
   }
 }
 
-### Search for String API
+### Search for String API - JDK 25
 POST {{serverMCPUrl}}
 Accept: {{accept}}
 Content-Type: {{contentType}}
@@ -102,14 +108,14 @@ Mcp-Session-Id: {{mcpSessionId}}
   "params": {
     "name": "searchJavadoc",
     "arguments": {
-      "version": "25.0.3",
+      "version": "{{jdkVersion25}}",
       "query": "String substring method",
       "topK": 3
     }
   }
 }
 
-### Start Doc Generation — async task - 25.0.3
+### Start Doc Generation — async task - JDK 25
 POST {{serverMCPUrl}}
 Accept: {{accept}}
 Content-Type: {{contentType}}
@@ -122,7 +128,7 @@ Mcp-Session-Id: {{mcpSessionId}}
   "params": {
     "name": "startDocGeneration",
     "arguments": {
-      "version": "25.0.3"
+      "version": "{{jdkVersion25}}"
     }
   }
 }
@@ -143,7 +149,7 @@ Mcp-Session-Id: {{mcpSessionId}}
     });
 %}
 
-### Start Doc Generation — async task - 17.0.19
+### Start Doc Generation — async task - JDK 17
 POST {{serverMCPUrl}}
 Accept: {{accept}}
 Content-Type: {{contentType}}
@@ -156,7 +162,7 @@ Mcp-Session-Id: {{mcpSessionId}}
   "params": {
     "name": "startDocGeneration",
     "arguments": {
-      "version": "17.0.19"
+      "version": "{{jdkVersion17}}"
     }
   }
 }
@@ -195,7 +201,7 @@ Mcp-Session-Id: {{mcpSessionId}}
   }
 }
 
-### Start Ingest — async task - 25.0.3
+### Start Ingest — async task - JDK 25
 POST {{serverMCPUrl}}
 Accept: {{accept}}
 Content-Type: {{contentType}}
@@ -208,7 +214,7 @@ Mcp-Session-Id: {{mcpSessionId}}
   "params": {
     "name": "startIngest",
     "arguments": {
-      "version": "25.0.3"
+      "version": "{{jdkVersion25}}"
     }
   }
 }
@@ -229,7 +235,7 @@ Mcp-Session-Id: {{mcpSessionId}}
     });
 %}
 
-### Start Ingest — async task - 17.0.19
+### Start Ingest — async task - 17
 POST {{serverMCPUrl}}
 Accept: {{accept}}
 Content-Type: {{contentType}}
