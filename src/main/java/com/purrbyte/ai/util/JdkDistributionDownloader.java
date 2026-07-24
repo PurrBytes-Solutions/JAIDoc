@@ -6,6 +6,7 @@ import com.purrbyte.ai.model.dto.Progress;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
 import tools.jackson.databind.json.JsonMapper;
 
@@ -73,7 +74,8 @@ public class JdkDistributionDownloader {
             try {
                 AdoptiumPackage pkg = resolveBinary(version, os, arch)
                         .orElseThrow(() -> new IOException(
-                                "No Adoptium JDK binary found for version " + version + " (" + os + "/" + arch + ")"));
+                                "JDK version " + version + " not found in Adoptium for " + os + "/" + arch
+                                        + " — the version may not exist yet or may not be published by Adoptium"));
                 Path targetDir = Path.of(downloadDirectory);
                 Path targetFile = targetDir.resolve(pkg.name());
                 if (Files.exists(targetFile)) {
@@ -83,7 +85,8 @@ public class JdkDistributionDownloader {
                 Files.createDirectories(targetDir);
                 Path partFile = targetDir.resolve(pkg.name() + ".part");
                 long total = pkg.size();
-                try (InputStream input = restClient.get().uri(URI.create(pkg.link())).retrieve().body(InputStream.class);
+                URI downloadURI = URI.create(pkg.link());
+                try (InputStream input = restClient.get().uri(downloadURI).retrieve().body(InputStream.class);
                      OutputStream output = Files.newOutputStream(partFile)) {
                     if (input == null) {
                         throw new IOException("Empty response from server");
@@ -113,31 +116,35 @@ public class JdkDistributionDownloader {
      * Resolves the Adoptium JDK binary (link, name, and size) for a version + OS + architecture by
      * paging through the GA feature releases and matching the requested major/minor/security.
      */
-    Optional<AdoptiumPackage> resolveBinary(String version, String os, String arch) {
+    Optional<AdoptiumPackage> resolveBinary(String version, String os, String arch) throws IOException {
         int[] req = parseVersion(version);
         for (int page = 0; page < maxPages; page++) {
             String url = ADOPTIUM_BASE + "/assets/feature_releases/" + req[0] + "/ga?architecture=" + arch + "&heap_size=normal&image_type=jdk&jvm_impl=hotspot&os=" + os + "&vendor=eclipse&page=" + page + "&page_size=" + pageSize + "&sort_order=DESC";
-            String body = restClient.get().uri(URI.create(url)).retrieve().body(String.class);
-            if (body == null || body.isBlank()) {
-                break;
-            }
-            AdoptiumRelease[] releases = jsonMapper.readValue(body, AdoptiumRelease[].class);
-            if (releases.length == 0) {
-                break;
-            }
-            for (AdoptiumRelease release : releases) {
-                if (!matchesVersion(release.versionData(), req)) {
-                    continue;
+            try {
+                String body = restClient.get().uri(URI.create(url)).retrieve().body(String.class);
+                if (body == null || body.isBlank()) {
+                    break;
                 }
-                if (release.binaries() == null) {
-                    continue;
+                AdoptiumRelease[] releases = jsonMapper.readValue(body, AdoptiumRelease[].class);
+                if (releases.length == 0) {
+                    break;
                 }
-                for (AdoptiumBinary binary : release.binaries()) {
-                    if ("jdk".equals(binary.imageType()) && os.equals(binary.os()) && arch.equals(binary.architecture())
-                            && binary.pkg() != null && binary.pkg().link() != null) {
-                        return Optional.of(binary.pkg());
+                for (AdoptiumRelease release : releases) {
+                    if (!matchesVersion(release.versionData(), req)) {
+                        continue;
+                    }
+                    if (release.binaries() == null) {
+                        continue;
+                    }
+                    for (AdoptiumBinary binary : release.binaries()) {
+                        if ("jdk".equals(binary.imageType()) && os.equals(binary.os()) && arch.equals(binary.architecture())
+                                && binary.pkg() != null && binary.pkg().link() != null) {
+                            return Optional.of(binary.pkg());
+                        }
                     }
                 }
+            } catch (HttpClientErrorException.NotFound e) {
+                throw new IOException("Adoptium API returned 404 for version " + version + " (" + os + "/" + arch + ") — the version may not exist yet or may not be available for this platform", e);
             }
         }
         return Optional.empty();
