@@ -62,9 +62,80 @@ done
 For each dependency, run the curl command and compare against the value in the `<properties>` section of `pom.xml`.
 Format as:
 
-| Dependency     | Current (pom.xml) | Latest on Sonatype Central | Status                                |
-|----------------|-------------------|----------------------------|---------------------------------------|
-| **artifactId** | X.Y.Z             | A.B.C                      | ✅ Up to date / 📈 Update / ⚠️ Review |
+| Dependency     | Current (pom.xml) | Latest on Sonatype Central | Status                                | Release notes / migration |
+|----------------|-------------------|----------------------------|---------------------------------------|---------------------------|
+| **artifactId** | X.Y.Z             | A.B.C                      | ✅ Up to date / 📈 Update / ⚠️ Review | link(s) — see below       |
+
+### Status Legend
+
+The `Status` column is **derived deterministically** by comparing the version in `pom.xml` (*Current*) with the latest
+version returned by Sonatype Central (*Latest*). Compare versions numerically, component by component
+(`major.minor.patch`), and treat qualifier suffixes (`.Final`, `-RC1`, `-M1`, `-SNAPSHOT`) as lower precedence than the
+matching release. Assign exactly one status per row:
+
+| Status        | When it applies                                                                                                                     |
+|---------------|-------------------------------------------------------------------------------------------------------------------------------------|
+| ✅ Up to date | *Current* equals *Latest* (same version).                                                                                           |
+| 📈 Update     | *Current* is **older** than *Latest* (a newer stable version exists). Always attach the release-notes / migration link (see below). |
+| ⚠️ Review     | The result is **not a clean, comparable stable upgrade** and a human must look at it (see the triggers below).                      |
+
+**`⚠️ Review` triggers** — use this status (never guess a version) whenever any of the following is true:
+
+- The Sonatype Central query **failed, timed out, or returned no result** for the coordinate.
+- The latest published version is a **pre-release / milestone** (`-M`, `-RC`, `-SNAPSHOT`, `-alpha`, `-beta`) while the
+  project uses a stable one — upgrading is optional and must be decided manually.
+- The version is **managed by a BOM or the parent** and pinning it locally would fight that management.
+- The bump is a **major version change** (the leading `major` component increases, e.g. `4.x → 5.0`) — these are almost
+  always breaking and require reading the migration guide before updating.
+
+`⚠️ Review` is therefore **not an error by itself**: it means "this row needs a human decision", and the row must
+include a short note explaining *which* trigger fired.
+
+### Release Notes & Migration References
+
+Whenever a dependency is flagged **📈 Update** or **⚠️ Review** (major bump), attach a reference link so the reader can
+assess the migration effort instead of upgrading blind. Build the links from the source repository, not from Sonatype.
+
+**General convention** — most projects tag releases as `v<version>`, so the release notes live at:
+
+```
+https://github.com/<owner>/<repo>/releases/tag/v<version>
+```
+
+Some ecosystems use a different tag format; use the per-dependency mapping below and, when the exact tag is uncertain,
+fall back to the repository's `/releases` page or its wiki/changelog. The mapping for this project's declared
+dependencies:
+
+| Dependency (groupId:artifactId)                       | Source repository                                                                         | Tag format                       | Extra reference                                                                              |
+|-------------------------------------------------------|-------------------------------------------------------------------------------------------|----------------------------------|----------------------------------------------------------------------------------------------|
+| `org.springframework.boot:spring-boot-starter-parent` | [spring-projects/spring-boot](https://github.com/spring-projects/spring-boot)             | `v<version>`                     | Per-version release notes in the [wiki](https://github.com/spring-projects/spring-boot/wiki) |
+| `org.springframework.ai:spring-ai-bom`                | [spring-projects/spring-ai](https://github.com/spring-projects/spring-ai)                 | `v<version>`                     | [Reference docs](https://docs.spring.io/spring-ai/reference/)                                |
+| `org.springframework.cloud:spring-cloud-dependencies` | [spring-cloud/spring-cloud-release](https://github.com/spring-cloud/spring-cloud-release) | `v<version>`                     | Release-train notes in the [wiki](https://github.com/spring-cloud/spring-cloud-release/wiki) |
+| `org.springdoc:springdoc-openapi-starter-webflux-ui`  | [springdoc/springdoc-openapi](https://github.com/springdoc/springdoc-openapi)             | `v<version>`                     | —                                                                                            |
+| `org.hibernate.search:hibernate-search-bom`           | [hibernate/hibernate-search](https://github.com/hibernate/hibernate-search)               | `<version>` (no `v`)             | [Migration guides](https://hibernate.org/search/documentation/migrate/)                      |
+| `org.hibernate.orm:hibernate-community-dialects`      | [hibernate/hibernate-orm](https://github.com/hibernate/hibernate-orm)                     | `<version>` (no `v`)             | [Migration guides](https://hibernate.org/orm/documentation/migrate/)                         |
+| `com.microsoft.onnxruntime:onnxruntime_gpu`           | [microsoft/onnxruntime](https://github.com/microsoft/onnxruntime)                         | `v<version>`                     | —                                                                                            |
+| `org.apache.commons:commons-compress`                 | [apache/commons-compress](https://github.com/apache/commons-compress)                     | `rel/commons-compress-<version>` | [Changelog](https://commons.apache.org/proper/commons-compress/changes.html)                 |
+| `org.apache.httpcomponents.client5:httpclient5`       | [apache/httpcomponents-client](https://github.com/apache/httpcomponents-client)           | `rel/v<version>`                 | —                                                                                            |
+| `org.xerial:sqlite-jdbc`                              | [xerial/sqlite-jdbc](https://github.com/xerial/sqlite-jdbc)                               | `<version>` (no `v`)             | —                                                                                            |
+| `org.projectlombok:lombok`                            | [projectlombok/lombok](https://github.com/projectlombok/lombok)                           | `v<version>`                     | [Changelog](https://projectlombok.org/changelog)                                             |
+| `tools.jackson.*` (Jackson 3)                         | [FasterXML/jackson](https://github.com/FasterXML/jackson)                                 | `jackson-<version>`              | [Release notes wiki](https://github.com/FasterXML/jackson/wiki/Jackson-Releases)             |
+
+**Example** — Spring Boot `4.1.0`:
+
+- Release notes (tag): <https://github.com/spring-projects/spring-boot/releases/tag/v4.1.0>
+- Migration / release notes (wiki): <https://github.com/spring-projects/spring-boot/wiki> → "Spring Boot 4.1 Release
+  Notes"
+
+**Optional (best-effort) — fetch a short highlight** instead of only linking. When network access and the GitHub API are
+available, the release body can be pulled with:
+
+```bash
+curl -s "https://api.github.com/repos/<owner>/<repo>/releases/tags/v<version>" | jq -r '.body'
+```
+
+Treat this as best-effort only: if the call fails, is rate-limited, or the tag format differs, **fall back to printing
+the link** (the mapping above) — never block the report on it.
 
 ### What to Check
 
