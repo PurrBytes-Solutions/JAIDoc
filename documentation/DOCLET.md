@@ -16,20 +16,24 @@ The project has two main components:
 ## Architecture
 
 The doclet pipeline has two layers: the `doclet/` package handles JSON serialization, and the `service/` layer
-orchestrates the full pipeline (download → extract → run javadoc → compress).
+orchestrates the full pipeline (download → extract → run Javadoc → compress).
 
 ```
 com.purrbyte.ai.service
 ├── DocumentationService      # Orchestrator — selects source, delegates to SourceExtractor / JavadocRunner / ZipManager
-├── SourceExtractor           # Extracts lib/src.zip from distribution archives, resolves modules to document
+├── EmbeddingService          # Transformer embedding wrapper (e5 prefixes)
+├── IngestDiscoveryService    # Auto-discovers and ingests JDK versions on startup
+├── IngestionService          # Async ingestion of JSON Javadoc into the database
 ├── JavadocRunner             # Builds the javadoc command, executes the process, copies output, handles timeouts
+├── JdkSearchService          # Vector kNN search filtered by version
+├── SourceExtractor           # Extracts lib/src.zip from distribution archives, resolves modules to document
 └── ZipManager                # Compresses version directories to ZIPs, finds version ZIPs on disk
 
 com.purrbyte.ai.doclet
-├── JsonDoclet          # Main doclet — orchestrates option parsing, element iteration, JSON writing
-├── TypeJsonBuilder     # Converts javax.lang.model elements into JSON nodes
+├── ChunkWriter         # Writes JSONL chunks (splits oversized text)
 ├── DocTreeJson         # Serializes Javadoc comment trees (com.sun.source.doctree) into structured JSON and plain text
-└── ChunkWriter         # Writes JSONL chunks (splits oversized text)
+├── JsonDoclet          # Main doclet — orchestrates option parsing, element iteration, JSON writing
+└── TypeJsonBuilder     # Converts javax.lang.model elements into JSON nodes
 ```
 
 **Key dependencies:**
@@ -45,7 +49,7 @@ mvn clean package
 ```
 
 The build produces a Spring Boot fat JAR in `target/` and a doclet JAR in `doclet/`. The doclet is invoked through the
-standard javadoc CLI:
+standard Javadoc CLI:
 
 ```bash
 javadoc \
@@ -68,12 +72,12 @@ javadoc \
 | `--chunk-overlap <n>`      | 1              | 200                  | Overlap between fragments when a chunk is split      |
 | `--only-documented`        | 0              | —                    | Emit chunks only for elements with a Javadoc comment |
 
-Standard javadoc options (`-doctitle`, `-windowtitle`, `-charset`, `-link`, `-header`, `-footer`, `-notimestamp`) are
+Standard Javadoc options (`-doctitle`, `-windowtitle`, `-charset`, `-link`, `-header`, `-footer`, `-notimestamp`) are
 accepted and silently ignored so the doclet doesn't break integrations with Maven/Gradle.
 
 ### Documenting Java 8 sources
 
-There is a bug in the JDK javadoc tool (verified on JDK 21): `--release 8` (or `-source 8`) combined with `-subpackages`
+There is a bug in the JDK Javadoc tool (verified on JDK 21): `--release 8` (or `-source 8`) combined with `-subpackages`
 throws an `AssertionError` from the module system. Workarounds:
 
 **Option (a): Explicit file list via `@argfile`** — works with `--release 8`:
@@ -391,5 +395,5 @@ processing:
 
 - Uses the modern `jdk.javadoc.doclet` API (JDK 9+). The old `com.sun.javadoc` API was removed in JDK 13.
 - Jackson 3 (`tools.jackson.*`) requires Java 17, so the doclet must run on JDK 17 or higher (17, 21, 25, 27…).
-- To document source code from Java 8 to 27, pass `--release N` (or `-source N`) to the javadoc tool from within the
+- To document source code from Java 8 to 27, pass `--release N` (or `-source N`) to the Javadoc tool from within the
   application.

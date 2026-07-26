@@ -57,6 +57,7 @@ JAIDoc/
 └── src/
     ├── main/
     │   ├── java/com/purrbyte/ai/
+    │   │   ├── JAIDoc.java           # Main Spring Boot application class
     │   │   ├── configuration/       # Spring configuration classes
     │   │   │   ├── McpToolsConfiguration.java  # MCP tool auto-discovery setup
     │   │   │   ├── ObjectMapperConfiguration.java  # Jackson JSON serialization config
