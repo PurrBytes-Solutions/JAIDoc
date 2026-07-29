@@ -67,5 +67,5 @@ public class JdkDocChunk {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "doc_element_id")
-    private JdkDocElement JDKDocElement;
+    private JdkDocElement jdkDocElement;
 }

@@ -276,10 +276,10 @@ public class IngestionService {
                         .build();
                 JdkDocElement elem = elementById.get(ownerId);
                 if (elem != null) {
-                    jdkDocChunk.setJDKDocElement(elem);
+                    jdkDocChunk.setJdkDocElement(elem);
                 } else {
                     jdkDocElementRepository.findByJdkVersionAndQualifiedId(jdkVersion, ownerId)
-                            .ifPresent(jdkDocChunk::setJDKDocElement);
+                            .ifPresent(jdkDocChunk::setJdkDocElement);
                 }
                 jdkDocChunkRepository.save(jdkDocChunk);
                 if (count % BATCH_SIZE == 0) {

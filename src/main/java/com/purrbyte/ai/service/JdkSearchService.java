@@ -36,7 +36,7 @@ public class JdkSearchService {
     }
 
     private JdkSearchResult toResult(JdkDocChunk c, float score) {
-        String rawJson = c.getJDKDocElement() != null ? c.getJDKDocElement().getRawJson() : null;
+        String rawJson = c.getJdkDocElement() != null ? c.getJdkDocElement().getRawJson() : null;
         return new JdkSearchResult(c.getChunkId(), c.getKind(), c.getQualifiedType(),
                 c.getMember(), c.getSignature(), c.getText(), score, rawJson);
     }
