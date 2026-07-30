@@ -7,7 +7,7 @@ complexity.
 ## AI Software Server
 
 JAIDoc uses **llama.cpp Server** in routing mode to dynamically select the best model for each query based on
-complexity. Is compiled in Linux Debian Forky with CPU, CUDA and VULKAN
+complexity. It is built on Linux Debian Forky with CPU, CUDA, and Vulkan support.
 
 | Component | Technology       | Version | Date       |
 |-----------|------------------|---------|------------|
@@ -15,7 +15,7 @@ complexity. Is compiled in Linux Debian Forky with CPU, CUDA and VULKAN
 
 ## Hardware
 
-### Old Server
+### Previous Hardware (Retired)
 
 | Component     | Specification                          |
 |---------------|----------------------------------------|

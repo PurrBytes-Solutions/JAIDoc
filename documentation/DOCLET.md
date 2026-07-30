@@ -39,7 +39,7 @@ com.purrbyte.ai.doclet
 **Key dependencies:**
 
 - **Jackson 3** (`tools.jackson.*`) — JSON serialization; requires JDK 17+
-- **Spring AI MCP Server** — Model Context Protocol server (stub)
+- **Spring AI MCP Server** — Model Context Protocol server (streamable protocol, auto-discovered `@Tool` methods)
 - **Lombok** — Boilerplate reduction
 
 ## Building

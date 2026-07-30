@@ -5,7 +5,7 @@
 ```
 JAIDoc/
 ├── .claude/ / .env / .env.example / .git* / .github/ / .idea/ / .junie/ / .mcp.json / .mvn/  # Tooling & config
-├── AGENTS.md / CLAUDE.md            # AI agent guidelines (identical mirrors)
+├── AGENTS.md / CLAUDE.md            # AI agent guidelines (CLAUDE.md includes AGENTS.md via @AGENTS.md)
 ├── assembly/                        # Maven assembly descriptors
 │   └── doclet-jar.xml               # Packaging config for the doclet JAR
 ├── data/                            # JDK source and JSON docs — versioned (one dir per JDK version)

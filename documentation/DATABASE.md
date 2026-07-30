@@ -25,28 +25,28 @@ JdkVersion (jdk_version)            1 ──< JdkDocElement (jdk_doc_element)   
 
 ### Main columns of `jdk_doc_chunk`
 
-| Column           | Type       | Description                                       |
-|------------------|------------|---------------------------------------------------|
-| `id`             | TEXT       | UUID primary key                                  |
-| `jdk_version_id` | TEXT       | FK to `jdk_version` (required)                    |
-| `doc_element_id` | TEXT       | FK to `jdk_doc_element` (optional)                |
-| `version`        | TEXT       | JDK version (denormalized, mandatory kNN filter)  |
-| `chunk_id`       | TEXT       | Unique chunk identifier                           |
-| `text`           | TEXT (LOB) | Chunk text                                        |
-| `embedding`      | BLOB       | Vector embedding (384 floats, serialized as BLOB) |
-| `kind`           | TEXT       | Element type (MODULE, PACKAGE, TYPE, etc.)        |
-| `qualifiedType`  | TEXT       | Full type name                                    |
-| `packageName`    | TEXT       | Package it belongs to                             |
-| `moduleName`     | TEXT       | Module it belongs to                              |
-| `member`         | TEXT       | Member name (if it's a type member)               |
-| `signature`      | TEXT       | Member signature                                  |
-| `since`          | TEXT       | Since annotation                                  |
-| `deprecated`     | BOOLEAN    | Whether deprecated (`@GenericField boolean`)      |
-| `sourceFile`     | TEXT       | Source file name                                  |
-| `sourceLine`     | INTEGER    | Source line number                                |
-| `part`           | INTEGER    | Chunk part index within parent element            |
-| `parts`          | INTEGER    | Total parts for parent element                    |
-| `parentChunkId`  | TEXT       | Parent chunk ID (if this is a sub-chunk)          |
+| Column           | Type       | Description                                                       |
+|------------------|------------|-------------------------------------------------------------------|
+| `id`             | TEXT       | UUID primary key                                                  |
+| `jdk_version_id` | TEXT       | FK to `jdk_version` (required)                                    |
+| `doc_element_id` | TEXT       | FK to `jdk_doc_element` (optional)                                |
+| `version`        | TEXT       | JDK version (denormalized, mandatory kNN filter)                  |
+| `chunk_id`       | TEXT       | Unique chunk identifier                                           |
+| `text`           | TEXT (LOB) | Chunk text                                                        |
+| `embedding`      | BLOB       | Vector embedding (384 floats, serialized as BLOB)                 |
+| `kind`           | TEXT       | Element type (MODULE, PACKAGE, TYPE, etc.)                        |
+| `qualifiedType`  | TEXT       | Full type name                                                    |
+| `packageName`    | TEXT       | Package it belongs to                                             |
+| `moduleName`     | TEXT       | Module it belongs to                                              |
+| `member`         | TEXT       | Member name (if it's a type member)                               |
+| `signature`      | TEXT       | Member signature                                                  |
+| `since`          | TEXT       | Since annotation                                                  |
+| `deprecated`     | INTEGER    | Whether deprecated (0 = false, 1 = true; `@GenericField boolean`) |
+| `sourceFile`     | TEXT       | Source file name                                                  |
+| `sourceLine`     | INTEGER    | Source line number                                                |
+| `part`           | INTEGER    | Chunk part index within parent element                            |
+| `parts`          | INTEGER    | Total parts for parent element                                    |
+| `parentChunkId`  | TEXT       | Parent chunk ID (if this is a sub-chunk)                          |
 
 Unique constraint: `(jdk_version_id, chunk_id)`.
 

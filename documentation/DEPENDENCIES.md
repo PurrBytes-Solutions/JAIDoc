@@ -45,7 +45,7 @@ curl -s "https://central.sonatype.com/solrsearch/select?wt=json&q=g:org.springfr
 ```bash
 for dep in \
   "org.springframework.boot:spring-boot-starter-parent" \
-  "com.microsoft.onnxruntime:onnxruntime" \
+  "com.microsoft.onnxruntime:onnxruntime_gpu" \
   "org.springdoc:springdoc-openapi-starter-webflux-ui" \
   "org.apache.commons:commons-compress" \
   "org.hibernate.search:hibernate-search-bom" \

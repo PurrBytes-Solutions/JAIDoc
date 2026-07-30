@@ -254,7 +254,8 @@ cleaned up automatically.
 ### ChunkWriterTest — real file writes
 
 `ChunkWriterTest` writes actual JSONL files to a `@TempDir` directory and verifies the output content. It uses the
-`jsonMapper` injected from the Spring context to serialize objects.
+`jsonMapper` built via `UnitTest.createJsonMapper()` (the same `JsonMapperBuilderCustomizer` applied in production) to
+serialize objects.
 
 ### DocTreeJsonTest — normalization and entity decoding
 

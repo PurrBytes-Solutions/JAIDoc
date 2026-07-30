@@ -48,9 +48,15 @@ queryable database. The ZIP file is created under `data/jdk/` with a version-pre
 
 ## Pipeline Flow
 
+The pipeline has two stages: **doclet generation** (steps 1–6) produces JSON Javadoc, and **ingestion** (steps 7–8)
+embeds and persists the data into the database.
+
 ```
-JDK distribution ZIP → Extract lib/src.zip → Expand source tree → javadoc + JsonDoclet → JSON Javadoc → Compress ZIP → DB ingestion → Hibernate Search kNN index → MCP tools (queryable)
+JDK distribution ZIP → Extract lib/src.zip → Expand source tree → javadoc + JsonDoclet → JSON Javadoc → Compress ZIP
+JSON Javadoc → Embed (ONNX transformer) → Persist (SQLite + Hibernate Search kNN) → MCP tools (queryable)
 ```
+
+### Doclet Generation (Steps 1–6)
 
 1. **Obtain source** — Locate a complete `lib/src.zip`: use the running JDK's own when the version matches, otherwise
    download the Adoptium distribution and extract its `lib/src.zip` via `SourceExtractor`.
@@ -63,14 +69,19 @@ JDK distribution ZIP → Extract lib/src.zip → Expand source tree → javadoc 
 5. **Chunk** — Split the serialized JSON into semantic chunks via `ChunkWriter`.
 6. **Compress** — The version directory is compressed into a ZIP with a version-prefixed directory structure under
    `data/jdk/` (e.g., `25.0.3/index.json`).
+
+All steps 1–6 are fully implemented in `DocumentationService`.
+
+### Ingestion (Steps 7–8)
+
 7. **Embed** — Generate vector embeddings for each chunk using the ONNX transformer model
    (see [AI-MODELS.md](AI-MODELS.md)).
 8. **Persist** — Store chunks and elements in SQLite via JPA entities (`JdkDocChunk`, `JdkDocElement`), with vector
    embeddings indexed by Hibernate Search kNN.
 
-Steps 5–6 are fully implemented. `IngestionService.ingestAsync()` uses virtual threads to process each chunk (embedding
-generation + JPA persistence), tracking progress via `IngestProgress` DTOs (phases: `MODULE_MANIFEST`,
-`MODULE_ELEMENTS`, `MODULE_CHUNKS`) and reporting status via `TaskInfo`.
+Ingestion is triggered via `IngestionService.ingestAsync()`, which uses virtual threads to process each chunk
+(embedding generation + JPA persistence). Progress is tracked via `IngestProgress` DTOs (phases: `MODULE_MANIFEST`,
+`MODULE_ELEMENTS`, `MODULE_CHUNKS`) and reported via `TaskInfo`.
 
 ## Versioned Data
 
