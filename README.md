@@ -53,6 +53,14 @@ mvn clean package
 java -jar target/jaidoc-1.0.0.jar
 ```
 
+### IntelliJ IDEA
+
+A shared run configuration is provided in `.run/JAIDoc.run.xml`. It loads `.env` automatically and is portable across
+machines — import it via **Run → Edit Configurations → ⋯ → Add New Configuration → Spring Boot**, or simply open the
+`.run/` directory in IntelliJ and double-click `JAIDoc.run.xml` to import it.
+
+No additional setup is required beyond having a `.env` file (copy `.env.example` and adjust as needed).
+
 ### Embedding Model
 
 The app uses a local ONNX transformer model for semantic search (vector embeddings). The model is not tracked in Git —
