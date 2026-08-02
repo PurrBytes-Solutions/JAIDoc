@@ -11,7 +11,7 @@ complexity. It is built on Linux Debian Forky with CPU, CUDA, and Vulkan support
 
 | Component | Technology       | Version | Date       |
 |-----------|------------------|---------|------------|
-| Server    | llama.cpp Server | b10199  | 2026-07-30 |
+| Server    | llama.cpp Server | b10223  | 2026-08-01 |
 
 ## Hardware
 
