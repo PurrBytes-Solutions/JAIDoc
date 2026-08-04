@@ -4,5 +4,7 @@ spring:
       transformer:
         onnx:
           model-uri: ${AI_TRANSFORMER_ONNX:file:./onnx/model.onnx}
+          # Need CUDA install
+          gpu-device-id: ${AI_TRANSFORMER_CUDA_GOU:-1}
         tokenizer:
           uri: ${AI_TRANSFORMER_TOKENIZER:file:./onnx/tokenizer.json}
