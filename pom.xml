@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <!-- https://central.sonatype.com/artifact/org.springframework.boot/spring-boot/overview-->
+        <!-- https://central.sonatype.com/artifact/org.springframework.boot/spring-boot/versions-->
         <version>4.1.0</version>
         <relativePath/>
     </parent>
@@ -16,17 +16,17 @@
     <description>MCP server that makes JDK and Spring Boot documentation searchable and consumable by AI models
     </description>
     <properties>
-        <!-- https://central.sonatype.com/artifact/com.microsoft.onnxruntime/onnxruntime-->
-        <onnxruntime.version>1.27.0</onnxruntime.version>
+        <!-- https://central.sonatype.com/artifact/com.microsoft.onnxruntime/onnxruntime/versions-->
+        <onnxruntime.version>1.28.0</onnxruntime.version>
         <!-- https://central.sonatype.com/artifact/org.springdoc/springdoc-openapi-starter-webflux-ui/versions-->
         <openapi.version>3.0.3</openapi.version>
         <!-- https://central.sonatype.com/artifact/org.apache.commons/commons-compress/versions-->
         <commons-compress.version>1.28.0</commons-compress.version>
         <!-- https://central.sonatype.com/artifact/org.hibernate.search/hibernate-search-bom/versions-->
         <hibernate-search.version>8.4.0.Final</hibernate-search.version>
-        <!-- https://central.sonatype.com/artifact/org.springframework.ai/spring-ai-bom-->
+        <!-- https://central.sonatype.com/artifact/org.springframework.ai/spring-ai-bom/versions-->
         <spring-ai.version>2.0.0</spring-ai.version>
-        <!-- https://central.sonatype.com/artifact/org.springframework.cloud/spring-cloud-dependencies-->
+        <!-- https://central.sonatype.com/artifact/org.springframework.cloud/spring-cloud-dependencies/versions-->
         <spring-cloud.version>2025.1.2</spring-cloud.version>
         <java.version>25</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
