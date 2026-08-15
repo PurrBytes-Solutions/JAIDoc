@@ -1,25 +1,23 @@
 {
+    "github-anthropics-claude-plugins-official": {
+        "url": "https://github.com/anthropics/claude-plugins-official",
+        "extensions": [
+            "frontend-design",
+            "mcp-server-dev"
+        ],
+        "source": {
+            "type": "git",
+            "url": "https://github.com/anthropics/claude-plugins-official"
+        }
+    },
     "github-JetBrains-junie-extensions": {
         "url": "https://github.com/JetBrains/junie-extensions",
         "extensions": [
-            "java-engineer",
             "spring-boot-engineer"
         ],
         "source": {
             "type": "git",
             "url": "https://github.com/JetBrains/junie-extensions"
-        }
-    },
-    "github-anthropics-claude-plugins-official": {
-        "url": "https://github.com/anthropics/claude-plugins-official",
-        "extensions": [
-            "frontend-design",
-            "mcp-server-dev",
-            "skill-creator"
-        ],
-        "source": {
-            "type": "git",
-            "url": "https://github.com/anthropics/claude-plugins-official"
         }
     }
 }
