@@ -26,16 +26,17 @@ complexity. It is built on Linux Debian Forky with CPU, CUDA, and Vulkan support
 
 ### Actual Server
 
-| Component             | Specification                        |                       Buy Link                       |                    Notes                     |
-|-----------------------|--------------------------------------|:----------------------------------------------------:|:--------------------------------------------:|
-| Motherboard           | Machinist X99 MD8 Dual Intel CPU     | https://es.aliexpress.com/item/1005009718980845.html |                                              |
-| CPU                   | 2 x E5 2680 V4                       |      https://www.amazon.com/dp/B0D8VS42T8?th=1       |                                              |
-| RAM                   | 2 x 16GB DDR4-2400 ECC               |   https://es.aliexpress.com/item/33002249520.html    |                                              |
-| GPU 1 - PCI-E 3.0 16X | NVIDIA RTX 3090 24GB                 |                                                      |                                              |
-| GPU 2 - PCI-E 3.0 8X  | NVIDIA RTX 3060 12GB                 |                                                      | Motherboard space limitation force to use 8x |
-| PSU 1                 | MSI 1,000 Watts                      |      https://www.amazon.com/dp/B0FJZHR289?th=1       |                                              |
-| PSU 2                 | MSI 750 Watts                        |      https://www.amazon.com/dp/B0FJZHMSV9?th=1       |                                              |
-| VRAM                  | 36 GB (layer split across both GPUs) |                                                      |                                              |
+| Component             | Specification                     |                       Buy Link                       |                 Notes                 |
+|-----------------------|-----------------------------------|:----------------------------------------------------:|:-------------------------------------:|
+| Motherboard           | Machinist X99 MD8 Dual Intel CPU  | https://es.aliexpress.com/item/1005009718980845.html |                                       |
+| CPU                   | 2 x E5 2680 V4                    |      https://www.amazon.com/dp/B0D8VS42T8?th=1       |                                       |
+| RAM                   | 4 x 16GB DDR4-2400 ECC            |   https://es.aliexpress.com/item/33002249520.html    |                 64GB                  |
+| GPU 1 - PCI-E 3.0 16X | NVIDIA RTX 3090 24GB              |                                                      |          Use Riser for space          |
+| GPU 2 - PCI-E 3.0 8X  | NVIDIA RTX 3060 12GB              |                                                      |            Direct in board            |
+| GPU 3 - PCI-E 3.0 16X | NVIDIA V100 16GB                  |                                                      | Direct in board and use PCI-E adapter |
+| PSU 1                 | MSI 1,000 Watts                   |      https://www.amazon.com/dp/B0FJZHR289?th=1       |                                       |
+| PSU 2                 | MSI 750 Watts                     |      https://www.amazon.com/dp/B0FJZHMSV9?th=1       |                                       |
+| VRAM                  | 52 GB (layer split across 3 GPUs) |                                                      |                                       |
 
 #### Server Benchmark
 
@@ -90,17 +91,26 @@ ggml_vulkan: 1 = NVIDIA GeForce RTX 3090 (NVIDIA) | uma: 0 | fp16: 1 | bf16: 1 |
 
 Cache KV use Q8_0 quantization
 
-| Model                       | Quantization | Context Size | Engine | URL                                                                     |
-|-----------------------------|:------------:|:------------:|:------:|-------------------------------------------------------------------------|
-| Ternary-Bonsai-27B-gguf     |     Q2_0     |  256K (MAX)  | VULKAN | https://huggingface.co/prism-ml/Ternary-Bonsai-27B-gguf                 |
-| Qwopus3.6-35B-A3B-Coder-MTP |    Q5_K_M    |  256K (MAX)  |  CUDA  | https://huggingface.co/Jackrong/Qwopus3.6-35B-A3B-Coder-MTP-GGUF        |
-| Mellum2-12B-A2.5B           |    Q4_K_M    |  128K (MAX)  |  CUDA  | https://huggingface.co/JetBrains/Mellum2-12B-A2.5B-Thinking-GGUF-Q4_K_M |
-| Ornith-1.0-9B               |  UD-Q8_K_XL  |  256K (MAX)  |  CUDA  | https://huggingface.co/unsloth/Ornith-1.0-9B-GGUF                       |
-| Ornith-1.0-35B              |  UD-Q5_K_XL  |  256K (MAX)  |  CUDA  | https://huggingface.co/unsloth/Ornith-1.0-35B-GGUF                      |
-| gemma-4-12B-it              |  UD-Q8_K_XL  |  128K (MAX)  |  CUDA  | https://huggingface.co/unsloth/gemma-4-12b-it-GGUF                      |
-| gemma-4-26B-A4B-it          |  UD-Q5_K_XL  |  256K (MAX)  |  CUDA  | https://huggingface.co/unsloth/gemma-4-26B-A4B-it-GGUF                  |
-| gemma-4-31B-it              |  UD-Q5_K_XL  |  256K (MAX)  |  CUDA  | https://huggingface.co/unsloth/gemma-4-31B-it-GGUF                      |
-| Phi-4-mini-reasoning        |  UD-Q8_K_XL  |  128K (MAX)  |  CUDA  | https://huggingface.co/unsloth/Phi-4-mini-reasoning-GGUF                |
+| Model                       | Quantization | Context Size | Engine | URL                                                                |
+|-----------------------------|:------------:|:------------:|:------:|--------------------------------------------------------------------|
+| KAT-Coder-V2.5-Dev          |    Q6_K_L    |  256K (MAX)  |  CUDA  | https://huggingface.co/bartowski/Kwaipilot_KAT-Coder-V2.5-Dev-GGUF |
+| Qwopus3.6-35B-A3B-Coder-MTP |     Q6_K     |  256K (MAX)  |  CUDA  | https://huggingface.co/Jackrong/Qwopus3.6-35B-A3B-Coder-MTP-GGUF   |
+| gemma-4-26B-A4B-it          |  UD-Q8_K_XL  |  256K (MAX)  |  CUDA  | https://huggingface.co/unsloth/gemma-4-26B-A4B-it-GGUF             |
+| gemma-4-31B-it              |  UD-Q5_K_XL  |  256K (MAX)  |  CUDA  | https://huggingface.co/unsloth/gemma-4-31B-it-GGUF                 |
+| Muse-Glimmer-30B            |  UD-Q6_K_XL  |  256K (MAX)  |  CUDA  | https://huggingface.co/unsloth/Muse-Glimmer-30B-GGUF               |
+| Ornith-1.0-35B              |  UD-Q5_K_XL  |  256K (MAX)  |  CUDA  | https://huggingface.co/unsloth/Ornith-1.0-35B-GGUF                 |
+| Qwen3.6-35B-A3B-MTP         |  UD-Q5_K_XL  |  256K (MAX)  |  CUDA  | https://huggingface.co/unsloth/Qwen3.6-35B-A3B-MTP-GGUF            |
+| Qwen3.8-27B                 |  UD-Q6_K_XL  |  256K (MAX)  |  CUDA  | https://huggingface.co/unsloth/Qwen3.8-27B-GGUF                    |
+
+#### Old Model Info
+
+| Model                | Quantization | Context Size | Engine | URL                                                                     |
+|----------------------|:------------:|:------------:|:------:|-------------------------------------------------------------------------|
+| Ternary-Bonsai-27B   |     Q2_0     |  256K (MAX)  | VULKAN | https://huggingface.co/prism-ml/Ternary-Bonsai-27B-gguf                 |
+| Mellum2-12B-A2.5B    |    Q4_K_M    |  128K (MAX)  |  CUDA  | https://huggingface.co/JetBrains/Mellum2-12B-A2.5B-Thinking-GGUF-Q4_K_M |
+| Ornith-1.0-9B        |  UD-Q8_K_XL  |  256K (MAX)  |  CUDA  | https://huggingface.co/unsloth/Ornith-1.0-9B-GGUF                       |
+| gemma-4-12B-it       |  UD-Q8_K_XL  |  128K (MAX)  |  CUDA  | https://huggingface.co/unsloth/gemma-4-12b-it-GGUF                      |
+| Phi-4-mini-reasoning |  UD-Q8_K_XL  |  128K (MAX)  |  CUDA  | https://huggingface.co/unsloth/Phi-4-mini-reasoning-GGUF                |
 
 ## AI Agents
 
