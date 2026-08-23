@@ -31,11 +31,10 @@ complexity. It is built on Linux Debian Forky with CPU, CUDA, and Vulkan support
 | Motherboard           | Machinist X99 MD8 Dual Intel CPU  | https://es.aliexpress.com/item/1005009718980845.html |                                       |
 | CPU                   | 2 x E5 2680 V4                    |      https://www.amazon.com/dp/B0D8VS42T8?th=1       |                                       |
 | RAM                   | 4 x 16GB DDR4-2400 ECC            |   https://es.aliexpress.com/item/33002249520.html    |                 64GB                  |
-| GPU 1 - PCI-E 3.0 16X | NVIDIA RTX 3090 24GB              |                                                      |          Use Riser for space          |
-| GPU 2 - PCI-E 3.0 8X  | NVIDIA RTX 3060 12GB              |                                                      |            Direct in board            |
-| GPU 3 - PCI-E 3.0 16X | NVIDIA V100 16GB                  |                                                      | Direct in board and use PCI-E adapter |
-| PSU 1                 | MSI 1,000 Watts                   |      https://www.amazon.com/dp/B0FJZHR289?th=1       |                                       |
-| PSU 2                 | MSI 750 Watts                     |      https://www.amazon.com/dp/B0FJZHMSV9?th=1       |                                       |
+| GPU 1 - PCI-E 3.0 16X | NVIDIA V100 16GB                  |                                                      | Direct in board and use PCI-E adapter |
+| GPU 2 - PCI-E 3.0 16X | NVIDIA RTX 3090 24GB              |                                                      |          Use Riser for space          |
+| GPU 3 - PCI-E 3.0 8X  | NVIDIA RTX 3060 12GB              |                                                      |            Direct in board            |
+| PSU                   | ASRock PG 1600G ATX 3.1 1600W     |               https://a.co/d/03dcCe2u                |                                       |
 | VRAM                  | 52 GB (layer split across 3 GPUs) |                                                      |                                       |
 
 #### Server Benchmark
@@ -84,6 +83,8 @@ ggml_vulkan: 1 = NVIDIA GeForce RTX 3090 (NVIDIA) | uma: 0 | fp16: 1 | bf16: 1 |
 | PC Power Button                    | https://www.amazon.com/dp/B0F4DK1KBL                 |
 | E-ATX Open Chassis Case Rack       | https://www.amazon.com/dp/B0DDXBRJZ3                 |
 | 120Hz OLED Gaming Portable Monitor | https://es.aliexpress.com/item/1005012583492427.html |
+| MSI 1,000 Watts                    | https://www.amazon.com/dp/B0FJZHR289?th=1            |
+| MSI 750 Watts                      | https://www.amazon.com/dp/B0FJZHMSV9?th=1            |
 
 ## Models
 
