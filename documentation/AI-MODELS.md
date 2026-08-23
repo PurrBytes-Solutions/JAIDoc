@@ -26,16 +26,16 @@ complexity. It is built on Linux Debian Forky with CPU, CUDA, and Vulkan support
 
 ### Actual Server
 
-| Component             | Specification                     |                       Buy Link                       |                 Notes                 |
-|-----------------------|-----------------------------------|:----------------------------------------------------:|:-------------------------------------:|
-| Motherboard           | Machinist X99 MD8 Dual Intel CPU  | https://es.aliexpress.com/item/1005009718980845.html |                                       |
-| CPU                   | 2 x E5 2680 V4                    |      https://www.amazon.com/dp/B0D8VS42T8?th=1       |                                       |
-| RAM                   | 4 x 16GB DDR4-2400 ECC            |   https://es.aliexpress.com/item/33002249520.html    |                 64GB                  |
-| GPU 1 - PCI-E 3.0 16X | NVIDIA V100 16GB                  |                                                      | Direct in board and use PCI-E adapter |
-| GPU 2 - PCI-E 3.0 16X | NVIDIA RTX 3090 24GB              |                                                      |          Use Riser for space          |
-| GPU 3 - PCI-E 3.0 8X  | NVIDIA RTX 3060 12GB              |                                                      |            Direct in board            |
-| PSU                   | ASRock PG 1600G ATX 3.1 1600W     |               https://a.co/d/03dcCe2u                |                                       |
-| VRAM                  | 52 GB (layer split across 3 GPUs) |                                                      |                                       |
+| Component             | Specification                     |  TDP |                       Buy Link                       |                 Notes                 |
+|-----------------------|-----------------------------------|-----:|:----------------------------------------------------:|:-------------------------------------:|
+| Motherboard           | Machinist X99 MD8 Dual Intel CPU  |  80W | https://es.aliexpress.com/item/1005009718980845.html |                                       |
+| CPU                   | 2 x E5 2680 V4                    | 120W |      https://www.amazon.com/dp/B0D8VS42T8?th=1       |                                       |
+| RAM                   | 4 x 16GB DDR4-2400 ECC            |   8W |   https://es.aliexpress.com/item/33002249520.html    |                 64GB                  |
+| GPU 1 - PCI-E 3.0 16X | NVIDIA V100 16GB                  | 300W |                                                      | Direct in board and use PCI-E adapter |
+| GPU 2 - PCI-E 3.0 16X | NVIDIA RTX 3090 24GB              | 350W |                                                      |          Use Riser for space          |
+| GPU 3 - PCI-E 3.0 8X  | NVIDIA RTX 3060 12GB              | 170W |                                                      |            Direct in board            |
+| PSU                   | ASRock PG 1600G ATX 3.1 1600W     |    - |               https://a.co/d/03dcCe2u                |                                       |
+| VRAM                  | 52 GB (layer split across 3 GPUs) |    - |                                                      |                                       |
 
 #### Server Benchmark
 
