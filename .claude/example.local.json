@@ -1,5 +1,6 @@
 {
   "env": {
+    "CLAUDE_CODE_USE_POWERSHELL_TOOL": "1",
     "CLAUDE_CODE_ATTRIBUTION_HEADER": "0",
     "ANTHROPIC_AUTH_TOKEN": "llama",
     "ANTHROPIC_BASE_URL": "http://fmc-ai.local:9931",
