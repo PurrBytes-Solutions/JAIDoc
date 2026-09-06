@@ -11,7 +11,7 @@ complexity. It is built on Linux Debian Forky with CPU, CUDA, and Vulkan support
 
 | Component | Technology       | Version | Date       |
 |-----------|------------------|---------|------------|
-| Server    | llama.cpp Server | b10752  | 2026-09-02 |
+| Server    | llama.cpp Server | b10820  | 2026-09-05 |
 
 ## Hardware
 
@@ -31,7 +31,7 @@ complexity. It is built on Linux Debian Forky with CPU, CUDA, and Vulkan support
 | Motherboard           | Machinist X99 MD8 Dual Intel CPU  |  80W | https://es.aliexpress.com/item/1005009718980845.html |                                       |
 | CPU                   | 2 x E5 2680 V4                    | 120W |      https://www.amazon.com/dp/B0D8VS42T8?th=1       |                                       |
 | RAM                   | 4 x 16GB DDR4-2400 ECC            |   8W |   https://es.aliexpress.com/item/33002249520.html    |                 64GB                  |
-| GPU 1 - PCI-E 3.0 16X | NVIDIA V100 16GB                  | 300W |                                                      | Direct in board and use PCI-E adapter |
+| GPU 1 - PCI-E 3.0 8X  | NVIDIA V100 16GB                  | 300W |                                                      | Direct in board and use PCI-E adapter |
 | GPU 2 - PCI-E 3.0 16X | NVIDIA RTX 3090 24GB              | 350W |                                                      |          Use Riser for space          |
 | GPU 3 - PCI-E 3.0 8X  | NVIDIA RTX 3060 12GB              | 170W |                                                      |            Direct in board            |
 | PSU                   | ASRock PG 1600G ATX 3.1 1600W     |    - |               https://a.co/d/03dcCe2u                |                                       |
