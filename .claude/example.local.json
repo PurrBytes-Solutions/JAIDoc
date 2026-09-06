@@ -9,7 +9,7 @@
     "ANTHROPIC_DEFAULT_OPUS_MODEL": "unsloth-Ornith-1.0-35B",
     "ANTHROPIC_DEFAULT_SONNET_MODEL": "unsloth-Ornith-1.0-35B",
     "ANTHROPIC_DEFAULT_HAIKU_MODEL": "unsloth-Ornith-1.0-35B",
-    "CLAUDE_CODE_MAX_CONTEXT_TOKENS": 262144
+    "CLAUDE_CODE_MAX_CONTEXT_TOKENS": "262144"
   },
   "permissions": {
     "allow": [
