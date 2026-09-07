@@ -4,11 +4,12 @@
     "CLAUDE_CODE_ATTRIBUTION_HEADER": "0",
     "ANTHROPIC_AUTH_TOKEN": "llama",
     "ANTHROPIC_BASE_URL": "http://fmc-ai.local:9931",
-    "CLAUDE_CODE_EFFORT_LEVEL": "xhigh",
+    "CLAUDE_CODE_EFFORT_LEVEL": "medium",
     "ANTHROPIC_DEFAULT_FABLE_MODEL": "unsloth-Ornith-1.0-35B",
     "ANTHROPIC_DEFAULT_OPUS_MODEL": "unsloth-Ornith-1.0-35B",
     "ANTHROPIC_DEFAULT_SONNET_MODEL": "unsloth-Ornith-1.0-35B",
     "ANTHROPIC_DEFAULT_HAIKU_MODEL": "unsloth-Ornith-1.0-35B",
+    "ANTHROPIC_DEFAULT_MODEL": "ornith-ai-Ornith-1.5-35B-A3B",
     "CLAUDE_CODE_MAX_CONTEXT_TOKENS": "262144"
   },
   "permissions": {
